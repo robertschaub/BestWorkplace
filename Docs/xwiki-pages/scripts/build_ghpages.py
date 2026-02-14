@@ -328,7 +328,15 @@ loadBundle();"""
         '<div class="main-area" id="mainArea">'
     )
 
-    # 12. Patch image rendering to resolve local attachments and preserve params
+    # 12. Fix wiki-link regex to not consume [[image:...]] patterns
+    #     The wiki-link regex [[(?!https?://)...]] runs before the image regex,
+    #     so it grabs [[image:file.png||...]] as a link. Add image: to the exclusion.
+    html = html.replace(
+        r"text=text.replace(/\[\[(?!https?:\/\/)([^\]]+?)\]\]/g",
+        r"text=text.replace(/\[\[(?!https?:\/\/|image:)([^\]]+?)\]\]/g"
+    )
+
+    # 13. Patch image rendering to resolve local attachments and preserve params
     old_img_line = "text=text.replace(/\\[\\[image:([^\\]|]+?)(?:\\|[^\\]]*)?" \
                    "\\]\\]/g,'<img src=\"$1\" alt=\"image\">');"
     new_img_line = """text=text.replace(/\\[\\[image:([^\\]|]+?)(?:\\|\\|([^\\]]*))?\\]\\]/g,function(m,src,params){
