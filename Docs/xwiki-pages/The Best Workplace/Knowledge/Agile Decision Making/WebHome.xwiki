@@ -1,0 +1,45 @@
+=== [[Decentralize decision-making (SAFe Principle #9)>>url:https://www.scaledagileframework.com/decentralize-decision-making/]] ===
+
+Delivering value in the shortest sustainable lead time requires decentralized decision-making. It is a key tenet of Lean thinking. Any decision that must be escalated to higher levels of authority introduces a delay. Also, escalated decisions can decrease quality due to the lack of local context, plus changes to the facts on which they were based that occur during the waiting period. Conversely, decentralizing decision-making reduces delays, improves product development flow and throughput, and facilitates faster feedback and more innovative solutions. Higher levels of empowerment are an additional, tangible benefit.
+
+💡**Centralize Strategic Decisions, decentralize everything else**
+
+----
+
+=== [[Assume variability, preserve options (SAFe Principle #3)>>url:https://www.scaledagileframework.com/assume-variability-preserve-options/]] ===
+
+...developers are inclined to reduce variability as quickly as possible. The more deterministic things are, the better we feel. That’s just human nature. It seems that the more we think we know and have already decided, the further along we think we are. And that’s true up to a point, but even then variability is a constant presence. Variability is inherently neither bad or good—it just is what it is. But it’s the economics associated with the timing and type of variability that determines outcomes.
+The goal is to manage variability, and to preserve options, providing the controls and flexibility teams need to build great solutions.
+
+----
+
+=== [[Don’t Ask for Permission or Forgiveness—Use an Agile Alternative>>url:https://www.techwell.com/techwell-insights/2019/12/don-t-ask-permission-or-forgiveness-use-agile-alternative]] ===
+
+... take an “I intend to” approach.
+Rather than asking for permission or forgiveness after the fact, describe the situation and your plan of action without specifically asking for authorization.
+This gives a decision-maker the opportunity to intercede if they have strong reasons to, and it gives you more freedom to take action.
+
+----
+
+=== [[Decision Making Systems Matter (Agile Alliance)>>url:https://www.agilealliance.org/decision-making-systems-matter/]] ===
+
+Many organizations rely on leadership hierarchies to maintain a balance between autonomy and alignment. They are good in governing larger organizational structures and (in theory) allow for fast decision making through a clear distribution of authority. However, faced with increasingly complex situations decision making in a leadership hierarchy may result in weak alignment which is often compensated for with a compliance driven roll out of decisions. After a while conflicts pop up leading in a worst case scenario to further compliance-driven roll out with a possible resignation of employees or at best in some kind of consultative decision making in order to repair the decisions and to achieve better alignment and better implementation.
+
+[[image:https://www.agilealliance.org/wp-content/uploads/2017/03/fig7-1024x297.jpg||width="550"]]
+
+The sociocratic approach offers us a pragmatic way to connect hierarchical decision making with agile participatory decision making creating the possibility to satisfy the needs of both. This collaborative decision making may then be expanded to all levels of the hierarchy, providing a smooth path to a more participatory organization.
+
+[[image:https://www.agilealliance.org/wp-content/uploads/2017/03/fig8-1024x212.jpg||width="400"]]
+
+The picture below explains the concept of the double link. Each circle sents its leadership and a chosen representative to the circle meeting at the next higher level. The leaderships provides the top down connection (blue arrow): seeing to it that the policy set at the next higher level is implemented in his or her team. Whereas the representative (red arrow) makes the bottom up connection by seeing to it that the information coming from his or her team is taken into account in the policy making at the next higher level. Thereby ensuring that the levels in the organizational hierarchy become equivalent in decision making. Which makes the hierarchy better steerable and agile.
+
+[[image:https://www.agilealliance.org/wp-content/uploads/2017/03/fig9.jpg||height="150"]]
+
+----
+
+== More related links ==
+
+* [[Agile decision-making – deciding when you don’t have all the facts>>url:https://www.youtube.com/watch?v=zxsG4-JJj6c]]
+* [[6 Agile Decision-Making Models to Foster Collaboration>>url:https://www.agile42.com/en/blog/decision-making-models]]
+* The [[Cynefin Framework>>url:https://thecynefin.co/about-us/about-cynefin-framework/]] ... helps leaders to cultivate an awareness of what is really complex and what is not and respond accordingly, so that no energy is wasted in overthinking the routine but they also never try to make the complex fit into standard solutions
+* [[Sociocracy 3.0 Pattern-Map>>url:https://patterns.sociocracy30.org/map.html]]

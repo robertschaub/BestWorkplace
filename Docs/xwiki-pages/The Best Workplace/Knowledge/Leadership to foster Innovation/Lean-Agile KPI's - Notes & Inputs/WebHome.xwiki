@@ -1,0 +1,70 @@
+(% class="box infomessage" %)
+(((
+💡** Consider [[OKR - Objectives and Key Results>>OKR - Objectives and Key Results]] instead of KPI's**
+)))
+
+=== Metrics have to solve a problem ===
+
+* What are you going to do with those figures?
+* Can you steer a better way? (Rather than through metrics)
+* "Players" should get to know their score in a timely manner
+
+[[image:1758356526776-288.png||height="154" width="312"]]
+
+=== Distinguish between "Lagging Indicators" vs. "Leading Indicators" ===
+
+[[image:1758356560205-261.png||height="214" width="387"]]
+
+[[geckoboard: Leading vs lagging indicators: what are they, and why do they matter for your business?>>url:https://www.geckoboard.com/blog/leading-lagging-or-lost-how-to-find-the-right-key-performance-indicators-for-your-sales-team/]]
+
+=== You get what you measure ===
+
+[[image:1758356629399-360.png||height="185" width="386"]]
+
+[[https:~~/~~/martinfowler.com/articles/useOfMetrics.html>>url:https://martinfowler.com/articles/useOfMetrics.html]]
+
+[[image:1758356641069-436.png||height="101" width="419"]]
+
+[[https:~~/~~/jeffgothelf.com/blog/how-blending-lean-agile-and-design-thinking-will-transform-your-team/>>url:https://jeffgothelf.com/blog/how-blending-lean-agile-and-design-thinking-will-transform-your-team/]]
+
+=== [[KPIs, Velocity, and Other Destructive Metrics ~| Allen Holub>>url:https://holub.com/kpis-velocity-and-other-destructive-metrics/]] ===
+
+So, what internal performance-related things might be worth measuring? :
+
+* **the number of improvements you've made to your process over time.** Make this into a game that encourages everybody to improve continuously. Every time you make an improvement, tack a descriptive sticky note to the wall. Everybody uses a different color, and whoever has the most notes wins!
+* **the number of tests you write before you code**
+* **the number of experiments you've performed**
+* **the number of process and institutional changes instigated by those experiments**
+* **the number of things you've learned in the past month**
+* **the number of validated business-level hypotheses you've developed**
+* **the number of times a week you talk to an actual customer**
+* **the number of changes to your backlog** (if it's not changing, why not?)
+* **the ratio of implemented to non-implemented customer-driven changes requested mid-iteration** (Why are you not changing the plan when the need arises?)
+* **the time that elapses between learning that you need some training and actually getting it.** This metric applies to any physical resource as well, of course. Training seems particularly indicative of problems, however, because it's discounted by people who don't "get" agile.
+* **the stability of your teams**
+* **the employee turnover rate**
+* **team hapiness/satisfaction levels** I'm reluctant to add this one because I don't know how to measure it directly. Turnover rate is related, of course, but we'd like to catch problems before people start quitting. I don't believe in the accuracy of surveys. Maybe you can add some ideas to the comments.
+
+== From Pluralsight ==
+
+[[Measuring Business Agility>>url:https://sonova.sharepoint.com/:v:/t/G-SO-RD-AgileCollaborationCommunity/EaSP-UuALDJAtTeQNeM6--EBNimoOkZ-CbloD3CupC_KCg?e=4UXSTQ]] Excerpt from [[Advanced Topics in Scaling Agile>>url:https://app.pluralsight.com/courses/b0a0835d-dcdf-4447-98aa-f7e7206e2ae1/table-of-contents]] By [[Tommy van Schaik>>url:https://app.pluralsight.com/profile/author/tommy-vanschaik]] [[pluralsight.com>>url:http://pluralsight.com]] 
+
+Slides: [[measuring-business-agility-slides.pdf>>url:https://sonova.sharepoint.com/:b:/t/G-SO-RD-AgileCollaborationCommunity/EXw2Z_IrsopBnMHdD8o14EwBN7nU8RoiE4-CV_hw-LD4nw?e=Y1499A]]
+[[image:1758356668371-504.png||height="308" width="533"]]
+
+See also: [[Understanding Agile Risk Management, Metrics, Stakeholder Management, and Agile Contracts ~| by Chuck Cobb Pluralsight>>url:https://app.pluralsight.com/library/courses/agile-risk-metrics-stakeholder-management]]
+
+== From SAFe ==
+
+[[https:~~/~~/www.scaledagileframework.com/measure-and-grow/>>url:https://www.scaledagileframework.com/measure-and-grow/]]
+[[image:1758356720637-512.png||height="725" width="608"]]
+
+== From Mc Kinsey ==
+
+[[https:~~/~~/www.mckinsey.com/business-functions/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact>>url:https://www.mckinsey.com/business-functions/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact]]
+[[image:1758356778140-326.png]]
+
+== From Seapoint Center ==
+
+[[https:~~/~~/seapointcenter.com/benchmarks-of-team-excellence/>>url:https://seapointcenter.com/benchmarks-of-team-excellence/]]
+[[image:1758356797039-396.png||height="446" width="416"]]
