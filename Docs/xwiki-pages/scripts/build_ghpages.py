@@ -20,6 +20,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -164,6 +165,21 @@ def find_root_ref(pages: Dict[str, str]) -> str:
         if ref.endswith('.WebHome') and ref.count('.') == 1:
             return ref
     return next(iter(pages)) if pages else ''
+
+
+def collect_attachments(content_dir: Path, output_dir: Path) -> int:
+    """Find all _attachments/ directories and copy files to output_dir/attachments/."""
+    att_out = output_dir / 'attachments'
+    count = 0
+    for att_dir in content_dir.rglob('_attachments'):
+        if not att_dir.is_dir():
+            continue
+        for f in att_dir.iterdir():
+            if f.is_file():
+                att_out.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(f, att_out / f.name)
+                count += 1
+    return count
 
 
 def generate_viewer_html(template_path: Path) -> str:
@@ -312,6 +328,23 @@ loadBundle();"""
         '<div class="main-area" id="mainArea">'
     )
 
+    # 12. Patch image rendering to resolve local attachments and preserve params
+    old_img_line = "text=text.replace(/\\[\\[image:([^\\]|]+?)(?:\\|[^\\]]*)?" \
+                   "\\]\\]/g,'<img src=\"$1\" alt=\"image\">');"
+    new_img_line = """text=text.replace(/\\[\\[image:([^\\]|]+?)(?:\\|\\|([^\\]]*))?\\]\\]/g,function(m,src,params){
+      var s=src.trim();
+      if(!/^https?:\\/\\//.test(s)) s='attachments/'+encodeURIComponent(s);
+      var a='';
+      if(params){
+        var wm=params.match(/width="(\\d+)"/);
+        var hm=params.match(/height="(\\d+)"/);
+        if(wm)a+=' width="'+wm[1]+'"';
+        if(hm)a+=' height="'+hm[1]+'"';
+      }
+      return '<img src="'+s+'" alt="image"'+a+'>';
+    });"""
+    html = html.replace(old_img_line, new_img_line)
+
     return html
 
 
@@ -391,12 +424,18 @@ def main():
     html_size = html_path.stat().st_size
     print(f'  Wrote {html_path} ({html_size:,} bytes)')
 
+    # Collect attachments (images)
+    att_count = collect_attachments(content_dir, output_dir)
+    if att_count:
+        att_size = sum(f.stat().st_size for f in (output_dir / 'attachments').iterdir())
+        print(f'  Copied {att_count} attachments ({att_size:,} bytes)')
+
     # Generate .nojekyll
     nojekyll_path = output_dir / '.nojekyll'
     nojekyll_path.write_text('', encoding='utf-8')
 
     total_size = json_size + html_size
-    print(f'\nDone! {len(pages)} pages, {total_size:,} bytes total')
+    print(f'\nDone! {len(pages)} pages, {att_count} attachments, {total_size:,} bytes total')
     print(f'Output: {output_dir.resolve()}')
     print(f'\nTo deploy, copy contents of {output_dir}/ to the gh-pages branch.')
 
