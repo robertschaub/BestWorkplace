@@ -167,6 +167,47 @@ def find_root_ref(pages: Dict[str, str]) -> str:
     return next(iter(pages)) if pages else ''
 
 
+def _derive_title(file_path: Path) -> str:
+    """Derive a page title from the file path.
+    For WebHome.xwiki, use the parent directory name.
+    For other files, use the file stem."""
+    if file_path.stem == 'WebHome':
+        return file_path.parent.name
+    return file_path.stem
+
+
+def _has_heading(content: str) -> bool:
+    """Check if the content already starts with a heading (= or ==)."""
+    for line in content.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        # xWiki heading: starts with = (H1) or == (H2) etc.
+        if re.match(r'^={1,6}\s', stripped):
+            return True
+        # Any non-empty, non-heading line means content starts without a heading
+        return False
+    return False
+
+
+def inject_titles(pages: Dict[str, str], content_dir: Path) -> int:
+    """Prepend page titles as H1 headings for pages that lack them."""
+    count = 0
+    for ref, content in list(pages.items()):
+        if _has_heading(content):
+            continue
+        # Reconstruct file path from ref to derive title
+        segments = ref.split('.')
+        file_path = content_dir
+        for seg in segments[:-1]:
+            file_path = file_path / seg
+        file_path = file_path / (segments[-1] + '.xwiki')
+        title = _derive_title(file_path)
+        pages[ref] = f'= {title} =\n\n{content}'
+        count += 1
+    return count
+
+
 def collect_attachments(content_dir: Path, output_dir: Path) -> int:
     """Find all _attachments/ directories and copy files to output_dir/attachments/."""
     att_out = output_dir / 'attachments'
@@ -391,6 +432,11 @@ def main():
     tree, pages = scan_tree(content_dir)
     root_ref = find_root_ref(pages)
     print(f'  Found {len(pages)} pages, root: {root_ref}')
+
+    # Inject titles for pages that don't have headings
+    title_count = inject_titles(pages, content_dir)
+    if title_count:
+        print(f'  Injected titles for {title_count} pages')
 
     # Wrap tree in a root folder so the project name appears in the sidebar
     root_name = content_dir.name  # e.g. "The Best Workplace"
