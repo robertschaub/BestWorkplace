@@ -48,10 +48,15 @@ if ($hasChanges) {
 
 try {
     # Step 3: Switch to gh-pages branch
-    $branchExists = git rev-parse --verify gh-pages 2>$null
-    if ($branchExists) {
-        Write-Host "`nSwitching to gh-pages branch..." -ForegroundColor Yellow
+    # Use git branch --list to avoid stderr with $ErrorActionPreference = 'Stop'
+    $localBranch = git branch --list gh-pages
+    $remoteBranch = git branch --list -r origin/gh-pages
+    if ($localBranch) {
+        Write-Host "`nSwitching to local gh-pages branch..." -ForegroundColor Yellow
         git checkout gh-pages
+    } elseif ($remoteBranch) {
+        Write-Host "`nChecking out gh-pages from remote..." -ForegroundColor Yellow
+        git checkout -b gh-pages origin/gh-pages
     } else {
         Write-Host "`nCreating gh-pages orphan branch..." -ForegroundColor Yellow
         git checkout --orphan gh-pages
@@ -66,8 +71,34 @@ try {
     Copy-Item (Join-Path $buildDir 'pages.json') -Destination (Join-Path $repoRoot 'pages.json') -Force
     Copy-Item (Join-Path $buildDir '.nojekyll') -Destination (Join-Path $repoRoot '.nojekyll') -Force
 
+    # Copy attachments directory if it exists
+    $srcAttachments = Join-Path $buildDir 'attachments'
+    $dstAttachments = Join-Path $repoRoot 'attachments'
+    if (Test-Path $srcAttachments) {
+        if (Test-Path $dstAttachments) {
+            Remove-Item $dstAttachments -Recurse -Force
+        }
+        Copy-Item $srcAttachments -Destination $dstAttachments -Recurse -Force
+        Write-Host "  Copied attachments directory" -ForegroundColor Gray
+    }
+
+    # Copy redirect directories if they exist
+    Get-ChildItem $buildDir -Directory | Where-Object { $_.Name -ne 'attachments' } | ForEach-Object {
+        $dst = Join-Path $repoRoot $_.Name
+        if (Test-Path $dst) { Remove-Item $dst -Recurse -Force }
+        Copy-Item $_.FullName -Destination $dst -Recurse -Force
+        Write-Host "  Copied redirect: $($_.Name)/" -ForegroundColor Gray
+    }
+
     # Step 5: Commit
     git add index.html pages.json .nojekyll
+    $attachDir = Join-Path $repoRoot 'attachments'
+    if (Test-Path $attachDir) { git add attachments }
+    # Add any redirect directories
+    Get-ChildItem $buildDir -Directory | Where-Object { $_.Name -ne 'attachments' } | ForEach-Object {
+        $dirInRepo = Join-Path $repoRoot $_.Name
+        if (Test-Path $dirInRepo) { git add $_.Name }
+    }
     $date = Get-Date -Format 'yyyy-MM-dd'
     $commitHash = git -C $repoRoot log $currentBranch -1 --format='%h' 2>$null
     $msg = "docs: update gh-pages ($date, $commitHash)"
