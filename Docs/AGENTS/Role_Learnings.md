@@ -72,6 +72,66 @@ _(No entries yet)_
 **Learning:** The GitHub Actions workflow uses `force_orphan: true` which recreates the gh-pages branch each time. If you also have a local gh-pages branch (from manual deployment), it will be behind the remote and `git push` will fail with non-fast-forward. Solution: delete the local gh-pages branch (`git branch -D gh-pages`) and let GitHub Actions handle all deployments. Do NOT use `deploy-ghpages.ps1` after GitHub Actions is set up — they conflict.
 **Files:** `.github/workflows/deploy-docs.yml`, `Docs/xwiki-pages/scripts/deploy-ghpages.ps1`
 
+### 2026-02-15 — XAR scripts now support image attachments round-trip
+**Role:** DevOps Expert  **Agent/Tool:** Claude Code (Opus 4.6)
+**Category:** new-file
+**Learning:** All 4 XAR conversion scripts now handle `_attachments/` directories. Export (`xwiki_tree_to_xar.py`) scans for `_attachments/` alongside each `.xwiki` file, base64-encodes them, and `fulltree_to_xar.py` writes `<attachment>` XML elements into the XAR. Import (`xar_to_fulltree.py`) parses `<attachment>` elements (skipping empty ones), and `xar_to_xwiki_tree.py` writes decoded files to `_attachments/`. Round-trip tested: 28 BestWorkplace attachments (8.5 MB) survived export-import with exact byte-for-byte integrity. Scripts are identical in both FactHarbor and BestWorkplace repos.
+**Files:** `Docs/xwiki-pages/scripts/xwiki_tree_to_xar.py`, `Docs/xwiki-pages/scripts/fulltree_to_xar.py`, `Docs/xwiki-pages/scripts/xar_to_fulltree.py`, `Docs/xwiki-pages/scripts/xar_to_xwiki_tree.py`
+
+### 2026-02-15 — GitHub security settings must match FactHarbor
+**Role:** DevOps Expert  **Agent/Tool:** Claude Code (Opus 4.6)
+**Category:** tip
+**Learning:** BestWorkplace GitHub security should mirror FactHarbor. As of 2026-02-15 both repos have: Dependabot security updates (enabled), secret scanning + push protection (enabled), two rulesets — "BlockDefault" (prevents deletion and force-push of main) and "Branch Protection for Main" (PRs required with 1 approver, dismiss stale reviews, admin bypass). BestWorkplace omits FactHarbor's required "CI" status check since it has no CI workflow. Use `gh api repos/robertschaub/BestWorkplace/rulesets` to verify.
+**Files:** (GitHub API — no local files)
+
+---
+
+## Handover — 2026-02-15
+
+**Agent:** Claude Code (Opus 4.6)
+**Sessions:** 2 (continued session, context carried over)
+**Duration:** BestWorkplace repository creation through security hardening
+
+### Work Completed
+
+| Area | What was done |
+|------|--------------|
+| **Repo creation** | Created BestWorkplace GitHub repo from xWiki .xar export |
+| **Content extraction** | Extracted 20 pages from .xar to `.xwiki` file tree |
+| **Image attachments** | Downloaded 28 images from xWiki server to `_attachments/` dirs |
+| **Viewer** | Shared `xwiki-viewer.html` from FactHarbor with rendering fixes: `(% %)` prefix handling, `{{children/}}` macro, colspan/rowspan, table-level styling |
+| **GitHub Pages** | Auto-deploy via GitHub Actions (`deploy-docs.yml`), `build_ghpages.py` with BW-specific patches |
+| **XAR round-trip** | 4 scripts updated to support attachment export/import (verified 28 files, 8.5 MB) |
+| **Cross-links** | FactHarbor xWiki pages link to BestWorkplace gh-pages site |
+| **GitHub security** | Dependabot, secret scanning, push protection, branch rulesets — all matching FactHarbor |
+| **Agent docs** | `AGENTS.md`, `AGENTS_xWiki.md`, `Role_Learnings.md` fully populated |
+| **GitHub entry pages** | `LICENSE.md`, `CONTRIBUTING.md`, `SECURITY.md` created (uncommitted) |
+
+### Uncommitted Changes
+
+The following files are staged but NOT committed (left for successor):
+
+- `LICENSE.md` — CC BY-SA 4.0 license (matching xWiki content license page)
+- `CONTRIBUTING.md` — How to edit content, preview, deploy, use XAR scripts
+- `SECURITY.md` — Scope, what to report, enabled GitHub features
+
+**Action needed:** Review, adjust if desired, commit and push.
+
+### Pending / Future Work
+
+1. **Verify live site** — Check https://robertschaub.github.io/BestWorkplace/ renders correctly with images, table styling, and children lists
+2. **Create a dated .xar snapshot** — Now that export includes attachments: `python Docs/xwiki-pages/scripts/xwiki_tree_to_xar.py Docs/xwiki-pages --output "Docs/xwiki-export/BestWorkplace_15.Feb.2026.xar"`
+3. **Sync scripts if viewer changes** — Any change to `xwiki-viewer.html` must be copied between FactHarbor and BestWorkplace repos
+4. **FactHarbor has uncommitted changes** — `Docs/DEVELOPMENT/Coding Agent Prompts.md` (modified), `Docs/REVIEWS/` and `Docs/WIP/` (new files). These are FactHarbor-only, not BestWorkplace-related.
+
+### Key Architecture Decisions
+
+- **Viewer is shared** between repos (identical HTML), but `build_ghpages.py` differs (BW has extra patches #12, #13 for images)
+- **Scripts are shared** (all 4 XAR scripts are identical in both repos)
+- **GitHub Actions deploys** on every push to main — no manual deployment needed
+- **Admin bypass** on branch protection allows direct push to main (solo developer workflow)
+- **CC BY-SA 4.0** license for content (from original xWiki), MIT for scripts
+
 ---
 
 ## Captain Review Log
