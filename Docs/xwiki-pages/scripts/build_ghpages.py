@@ -397,6 +397,51 @@ loadBundle();"""
     return html
 
 
+def generate_redirects(redirects_path: Path, output_dir: Path, base_url: str = '') -> int:
+    """Read _redirects.json and generate HTML redirect pages.
+
+    Each key is the alias slug (e.g. "guide" -> guide/index.html),
+    each value is the target (hash fragment, relative path, or full URL).
+    """
+    if not redirects_path.is_file():
+        return 0
+
+    try:
+        redirects = json.loads(redirects_path.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f'  Warning: could not read {redirects_path}: {e}', file=sys.stderr)
+        return 0
+
+    count = 0
+    for slug, target in redirects.items():
+        # If target is a hash fragment, resolve relative to base
+        if target.startswith('#'):
+            full_target = f'../{target}' if not base_url else f'{base_url}{target}'
+        else:
+            full_target = target
+
+        redirect_dir = output_dir / slug
+        redirect_dir.mkdir(parents=True, exist_ok=True)
+        redirect_html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0; URL={full_target}">
+<link rel="canonical" href="{full_target}">
+<title>Redirecting…</title>
+</head>
+<body>
+<p>Redirecting to <a href="{full_target}">{full_target}</a>…</p>
+</body>
+</html>
+'''
+        (redirect_dir / 'index.html').write_text(redirect_html, encoding='utf-8')
+        count += 1
+        print(f'  Redirect: /{slug}/ -> {target}')
+
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Generate GitHub Pages deployment for xWiki docs'
@@ -484,12 +529,16 @@ def main():
         att_size = sum(f.stat().st_size for f in (output_dir / 'attachments').iterdir())
         print(f'  Copied {att_count} attachments ({att_size:,} bytes)')
 
+    # Generate redirects from _redirects.json
+    redirects_path = repo_root / 'Docs' / 'xwiki-pages' / '_redirects.json'
+    redirect_count = generate_redirects(redirects_path, output_dir)
+
     # Generate .nojekyll
     nojekyll_path = output_dir / '.nojekyll'
     nojekyll_path.write_text('', encoding='utf-8')
 
     total_size = json_size + html_size
-    print(f'\nDone! {len(pages)} pages, {att_count} attachments, {total_size:,} bytes total')
+    print(f'\nDone! {len(pages)} pages, {att_count} attachments, {redirect_count} redirects, {total_size:,} bytes total')
     print(f'Output: {output_dir.resolve()}')
     print(f'\nTo deploy, copy contents of {output_dir}/ to the gh-pages branch.')
 

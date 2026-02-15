@@ -11,12 +11,15 @@
 
 The [[Best Workplace Blueprint>>doc:WebHome]] is a one-page vision for how we work together. It combines Agile, Lean, User-Centered Design, and modern leadership principles into six commitments:
 
-* **We Engage with Our Users** — We know who we serve, we listen to them, and we put their needs first.
-* **We Build Networks of Empowered Teams** — Teams self-organize, own their decisions, and connect across boundaries.
-* **We Work in Iterations** — We learn early, adjust often, and build quality into every step.
-* **We Are Visionary Leaders and Enablers** — Leaders inspire, coach, remove obstacles, and create safety.
-* **We Foster Change** — We experiment, test hypotheses, and embrace evidence-based change.
-* **We Practice Transparency and Build Trust** — We share openly, keep our promises, and admit our mistakes.
+(% style="border-collapse:separate; border-spacing:0 8px; width:100%" %)
+|(% style="background-color:#faf7f2; padding:15px" %)(((
+* **We Engage with Our Users**\\We know who we serve, we listen to them, and we put their needs first.
+* **We Build Networks of Empowered Teams**\\Teams self-organize, own their decisions, and connect across boundaries.
+* **We Work in Iterations**\\We learn early, adjust often, and build quality into every step.
+* **We Are Visionary Leaders and Enablers**\\Leaders inspire, coach, remove obstacles, and create safety.
+* **We Foster Change**\\We experiment, test hypotheses, and embrace evidence-based change.
+* **We Practice Transparency and Build Trust**\\We share openly, keep our promises, and admit our mistakes.
+)))
 
 These are not abstract ideals. They are written as concrete, observable behaviors — things you can see in a team that lives them, and notice the absence of in a team that does not.
 
@@ -44,11 +47,11 @@ The Blueprint works only if you work with it. Here is how.
 
 Do not skim the Blueprint. Read it the way you would read a letter from someone who deeply cares about your future. Read one sentence at a time. Let it land.
 
-(% class="table-hover" %)
-|(((
+(% style="border-collapse:separate; border-spacing:0 8px; width:100%" %)
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 When you read //"We prioritize users' needs over assumptions or organizational priorities"// — pause. That is not a platitude. That is a commitment to override your own comfort, your department's habits, and sometimes your manager's preferences, in service of the people you exist to help.
 )))
-|(((
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 When you read //"Leaders provide psychological safety, viewing failure and mistakes as opportunities for continuous growth and learning"// — notice the weight of that promise. It means that next time someone on your team makes a mistake, your first response must not be blame. It must be curiosity.
 )))
 
@@ -59,8 +62,8 @@ Read the Blueprint at least once a quarter. You will be surprised: the same sent
 
 After reading, sit with two questions:
 
-(% class="table-hover" %)
-|(((
+(% style="border-collapse:separate; border-spacing:0 8px; width:100%" %)
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **"What does this sentence mean for //me//?"**
 
 This is the personal question. It asks you to be honest. Where am I already living this? Where am I falling short? Which sentence makes me uncomfortable — and why?
@@ -69,7 +72,7 @@ This is the personal question. It asks you to be honest. Where am I already livi
 * If //"We recognize our limitations and mistakes and persistently strive for improvement"// feels risky, ask yourself: What am I afraid will happen if I admit I was wrong?
 * If //"We consider the entire user journey, not just isolated interactions"// feels abstract, ask yourself: Do I actually know what happens to our users before they reach me and after they leave?
 )))
-|(((
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **"What does this sentence mean for //us//?"**
 
 This is the team question. It moves from self-awareness to shared commitment.
@@ -86,15 +89,15 @@ Reflection is not a one-time exercise. It is a habit. Build it into your retrosp
 
 The Blueprint becomes powerful only when it moves from private thought to shared conversation.
 
-(% class="table-hover" %)
-|(((
+(% style="border-collapse:separate; border-spacing:0 8px; width:100%" %)
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 Pick one sentence from the Blueprint. Bring it to your team. Ask: //"How are we doing on this? Honestly."//
 
 Do not ask this as a formality. Ask it because you genuinely want to know. And then — this is the hard part — listen. Do not defend. Do not explain. Listen.
 
 These discussions will be uncomfortable at first. That discomfort is the sound of growth. A team that can openly say //"We claim to foster change, but we punished the last person who tried something new"// is a team that is already changing.
 )))
-|(((
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **Some practical formats:**
 
 * **Blueprint Check-in (15 min, monthly):** Each team member picks the sentence that resonates most — or challenges most — this month. Share and discuss.
@@ -109,14 +112,14 @@ Reading, reflecting, and discussing will open your eyes. But awareness alone doe
 
 Growing means you take what you discovered and do something with it — not someday, but now. It means choosing one concrete behavior to practice until it becomes second nature, then choosing the next.
 
-(% class="table-hover" %)
-|(((
+(% style="border-collapse:separate; border-spacing:0 8px; width:100%" %)
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **For yourself:** You reflected that you tend to decide for the team instead of with them. Growth means that in your next meeting, you catch yourself, pause, and ask: //"What do you think we should do?"// — and then genuinely follow their lead. Do this once, it is effort. Do this for a month, it becomes who you are.
 )))
-|(((
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **For your team:** You discussed that feedback loops with users happen too late. Growth means you change the process: you schedule the first user check-in before the first sprint ends, not after the third. You try it, learn from it, and adjust.
 )))
-|(((
+|(% style="background-color:#faf7f2; padding:15px" %)(((
 **For the organization:** You recognized that leaders talk about psychological safety but still react with disappointment when targets are missed. Growth means leadership commits to a visible change — perhaps starting every post-mortem with //"What did we learn?"// instead of //"What went wrong?"// — and holding each other to it, meeting after meeting, quarter after quarter.
 )))
 
