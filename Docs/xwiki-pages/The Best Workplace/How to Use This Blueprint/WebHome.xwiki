@@ -1,9 +1,12 @@
-= Read, Reflect, Discuss — Making the Best Workplace Blueprint Your Own =
+(% class="table-hover" style="background-color:#f1ffed; color:#5e0000" %)
+(% class="active" %)|(% colspan="1" %)(((
+= //Build Your Best Workplace!// =
+
+//Read, Reflect, Discuss, Grow — Making the Best Workplace Blueprint Your Own//
 
 //A guide for individuals, teams, and organizations//
-
-----
-
+)))
+|(% colspan="1" %)(((
 == What Is the Best Workplace Blueprint? ==
 
 The [[Best Workplace Blueprint>>doc:WebHome]] is a one-page vision for how we work together. It combines Agile, Lean, User-Centered Design, and modern leadership principles into six commitments:
@@ -20,8 +23,9 @@ These are not abstract ideals. They are written as concrete, observable behavior
 If you have not read the Blueprint yet, **start there**. Read it once, all the way through. Then come back here.
 
 If you have read it before, read it again. You will find that it speaks differently to you now than it did the first time.
+)))
 
-== This Is Not a Poster on the Wall ==
+== This Is Not Just a Poster on the Wall ==
 
 The Blueprint is not a manifesto to be admired from a distance. It is not a corporate statement to be printed, framed, and forgotten. It is a living document — a mirror you hold up to yourself, your team, and your organization, again and again.
 
@@ -31,22 +35,32 @@ The Blueprint works only if you work with it. Here is how.
 
 ----
 
-== Three Practices: Read, Reflect, Discuss ==
-
+(% class="table-hover" style="background-color:#f1ffed; color:#5e0000" %)
+(% class="active" %)|(% colspan="1" %)(((
+== Four Practices: Read, Reflect, Discuss, Grow ==
+)))
+|(% colspan="1" %)(((
 === Read — Slowly, Sentence by Sentence ===
 
 Do not skim the Blueprint. Read it the way you would read a letter from someone who deeply cares about your future. Read one sentence at a time. Let it land.
 
+(% class="table-hover" %)
+|(((
 When you read //"We prioritize users' needs over assumptions or organizational priorities"// — pause. That is not a platitude. That is a commitment to override your own comfort, your department's habits, and sometimes your manager's preferences, in service of the people you exist to help.
-
+)))
+|(((
 When you read //"Leaders provide psychological safety, viewing failure and mistakes as opportunities for continuous growth and learning"// — notice the weight of that promise. It means that next time someone on your team makes a mistake, your first response must not be blame. It must be curiosity.
+)))
 
 Read the Blueprint at least once a quarter. You will be surprised: the same sentences will mean different things as you grow, as your team evolves, as your challenges shift.
-
+)))
+|(% colspan="1" %)(((
 === Reflect — What Does This Mean for Me? And for Us? ===
 
 After reading, sit with two questions:
 
+(% class="table-hover" %)
+|(((
 **"What does this sentence mean for //me//?"**
 
 This is the personal question. It asks you to be honest. Where am I already living this? Where am I falling short? Which sentence makes me uncomfortable — and why?
@@ -54,7 +68,8 @@ This is the personal question. It asks you to be honest. Where am I already livi
 * If //"Teams self-organize and wield decision-making power"// makes you uneasy, ask yourself: Am I holding on to control that I should be sharing?
 * If //"We recognize our limitations and mistakes and persistently strive for improvement"// feels risky, ask yourself: What am I afraid will happen if I admit I was wrong?
 * If //"We consider the entire user journey, not just isolated interactions"// feels abstract, ask yourself: Do I actually know what happens to our users before they reach me and after they leave?
-
+)))
+|(((
 **"What does this sentence mean for //us//?"**
 
 This is the team question. It moves from self-awareness to shared commitment.
@@ -62,24 +77,55 @@ This is the team question. It moves from self-awareness to shared commitment.
 * Are //we// really assembling diverse talents, or are we hiring people who think like us?
 * Are //we// truly sharing information openly, or are we sharing only what is convenient?
 * When //we// say we work in iterations, do we actually adjust based on what we learn — or do we just deliver in smaller batches while following the same old plan?
+)))
 
 Reflection is not a one-time exercise. It is a habit. Build it into your retrospectives, your one-on-ones, your leadership team meetings. Make it as routine as checking your calendar.
-
+)))
+|(% colspan="1" %)(((
 === Discuss — Out Loud, with Courage ===
 
 The Blueprint becomes powerful only when it moves from private thought to shared conversation.
 
+(% class="table-hover" %)
+|(((
 Pick one sentence from the Blueprint. Bring it to your team. Ask: //"How are we doing on this? Honestly."//
 
 Do not ask this as a formality. Ask it because you genuinely want to know. And then — this is the hard part — listen. Do not defend. Do not explain. Listen.
 
 These discussions will be uncomfortable at first. That discomfort is the sound of growth. A team that can openly say //"We claim to foster change, but we punished the last person who tried something new"// is a team that is already changing.
-
-Some practical formats:
+)))
+|(((
+**Some practical formats:**
 
 * **Blueprint Check-in (15 min, monthly):** Each team member picks the sentence that resonates most — or challenges most — this month. Share and discuss.
 * **Deep Dive (60 min, quarterly):** Take one full section of the Blueprint (e.g., "We Build Networks of Empowered Teams"). For each bullet point, rate yourselves honestly: Are we doing this? What is one thing we could do better?
 * **Leadership Circle (ongoing):** Leaders discuss one Blueprint sentence per week. The question is always the same: //"What did I do this week that lived up to this? What did I do that contradicted it?"//
+)))
+)))
+|(% colspan="1" %)(((
+=== Grow — Turn Insight into Action, Action into Habit ===
+
+Reading, reflecting, and discussing will open your eyes. But awareness alone does not change a workplace. Growth does.
+
+Growing means you take what you discovered and do something with it — not someday, but now. It means choosing one concrete behavior to practice until it becomes second nature, then choosing the next.
+
+(% class="table-hover" %)
+|(((
+**For yourself:** You reflected that you tend to decide for the team instead of with them. Growth means that in your next meeting, you catch yourself, pause, and ask: //"What do you think we should do?"// — and then genuinely follow their lead. Do this once, it is effort. Do this for a month, it becomes who you are.
+)))
+|(((
+**For your team:** You discussed that feedback loops with users happen too late. Growth means you change the process: you schedule the first user check-in before the first sprint ends, not after the third. You try it, learn from it, and adjust.
+)))
+|(((
+**For the organization:** You recognized that leaders talk about psychological safety but still react with disappointment when targets are missed. Growth means leadership commits to a visible change — perhaps starting every post-mortem with //"What did we learn?"// instead of //"What went wrong?"// — and holding each other to it, meeting after meeting, quarter after quarter.
+)))
+
+Growth is not a leap. It is a cycle: act, observe what happens, learn, adjust, act again. This is the same iterative principle the Blueprint describes for our work — now applied to //ourselves//.
+
+The question that drives growth is simple: //"Knowing what we now know — what is one thing we will do differently, starting this week?"//
+
+Not ten things. One thing. Done well. Then the next.
+)))
 
 ----
 
@@ -139,9 +185,11 @@ Read the Blueprint today. Not tomorrow. Today.
 
 Pick one sentence. The one that stirs something in you — excitement, resistance, guilt, hope.
 
-Reflect on it. Sit with it.
+Reflect on it. Sit with it. What does it mean for you? What does it mean for your team?
 
-Then find someone — a colleague, your team, your leader — and discuss it.
+Then find someone — a colleague, your team, your leader — and discuss it. Honestly.
+
+Then grow. Choose one thing you will do differently this week because of what you discovered.
 
 That is all it takes to begin. And beginning is the choice that changes everything.
 
