@@ -426,9 +426,9 @@ def generate_redirects(redirects_path: Path, output_dir: Path, base_url: str = '
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; URL={full_target}">
-<link rel="canonical" href="{full_target}">
 <title>Redirecting…</title>
+<script>window.location.replace("{full_target}");</script>
+<noscript><meta http-equiv="refresh" content="0; URL={full_target}"></noscript>
 </head>
 <body>
 <p>Redirecting to <a href="{full_target}">{full_target}</a>…</p>
