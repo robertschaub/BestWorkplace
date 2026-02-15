@@ -1,0 +1,42 @@
+# BestWorkplace — Windsurf Rules
+
+Full rules in `/AGENTS.md`. Read it for any documentation-heavy task.
+
+## Project
+Documentation-only — no source code. xWiki 2.1 pages about agile leadership and workplace culture, published via GitHub Pages.
+- `Docs/xwiki-pages/The Best Workplace/`: xWiki content pages (single source of truth)
+- `Docs/xwiki-pages/scripts/`: Build and deployment scripts
+
+## xWiki Syntax (2.1)
+- Headings: `= H1 =`, `== H2 ==`, `=== H3 ===`
+- Bold: `**bold**`, Italic: `//italic//`
+- Links: `[[Link Text>>Space.Page]]`
+- Diagrams: `{{mermaid}}...{{/mermaid}}`
+- Full rules: `Docs/AGENTS/GlobalMasterKnowledge_for_xWiki.md`
+
+## Commands
+- Preview: `Docs\xwiki-pages\View.cmd`
+- Build: `python Docs/xwiki-pages/scripts/build_ghpages.py`
+- Deploy: `powershell Docs/xwiki-pages/scripts/deploy-ghpages.ps1`
+
+## Safety
+- No secrets in commits.
+- No destructive git without explicit ask.
+- Do not modify build output (`gh-pages-build/`) unless asked.
+- Platform: Windows. PowerShell-compatible commands.
+
+## Roles
+
+When the user starts with "As \<Role\>" (e.g., "As Tech Writer, update…"), follow the **Role Activation Protocol** in `/AGENTS.md`. It tells you which role definition to load from `Docs/AGENTS/Multi_Agent_Collaboration_Rules.md` §2 and which documents to read.
+
+**Context-budget note:** If loading all Required Reading exceeds Cascade's context window, load only the role entry from §2 and defer document reads until needed for the specific task.
+
+## Agent Handoff
+If a task exceeds Cascade context limits or needs deep reasoning, recommend:
+- **Claude Code (Opus)**: complex multi-step reasoning
+- **Cursor Composer**: multi-file edits with visual diff preview
+See `/AGENTS.md` Agent Handoff Protocol for full reference.
+
+## Conventions
+- Commits: `type(scope): description`
+- Solo developer + AI agents. Direct push to main is normal.

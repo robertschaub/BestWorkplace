@@ -1,0 +1,39 @@
+---
+description: BestWorkplace core project rules — applies to all files
+alwaysApply: true
+---
+
+# BestWorkplace — Core Rules
+
+> **Canonical source:** `/AGENTS.md`. This file is a summary. If rules diverge, follow AGENTS.md.
+
+Read `/AGENTS.md` for full project rules and workflow.
+
+## Project Overview
+Documentation-only project — no source code. xWiki 2.1 pages about agile leadership and workplace culture, published via GitHub Pages.
+- `Docs/xwiki-pages/The Best Workplace/` — xWiki content pages
+- `Docs/xwiki-pages/scripts/` — Build and deployment scripts
+- `Docs/xwiki-pages/viewer-impl/` — Local HTML viewer
+
+## Safety
+- Do not change secrets/credentials or commit them.
+- Avoid destructive git commands unless explicitly asked.
+- Do not modify build output (`gh-pages-build/`) unless asked.
+
+## Conventions
+- Commit messages: conventional commits `type(scope): description`.
+- Platform: Windows. Use PowerShell-compatible commands.
+- Solo developer + AI agents. Direct push to main is normal.
+
+## Roles
+
+When the user starts with "As \<Role\>" (e.g., "As Tech Writer, update…"), follow the **Role Activation Protocol** in `/AGENTS.md`. It tells you which role definition to load from `Docs/AGENTS/Multi_Agent_Collaboration_Rules.md` §2 and which documents to read.
+
+**Context-budget note:** If loading all Required Reading exceeds your context window, load only the role entry from §2 and defer document reads until needed for the specific task.
+
+## Agent Handoff
+If another tool would be better for the task, say so:
+- Claude Code (Opus): complex multi-step reasoning, plan mode
+- GitHub Copilot: inline completions
+- Cline: autonomous multi-step workflows
+See `/AGENTS.md` Agent Handoff Protocol for full reference.
