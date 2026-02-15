@@ -52,7 +52,9 @@
 * We recognize our limitations and mistakes and persistently strive for improvement.
 )))
 
-(% class="box successmessage" %)
+== How? ==
+
+(% class="box" style="background-color:#fefff0; border-left:4px solid #d4d990; color:#5e0000" %)
 (((
 **[[Read, Reflect, Discuss, Grow — Making the Best Workplace Blueprint Your Own>>doc:How to Use This Blueprint.WebHome]]**
 A guide for individuals, teams, and organizations on how to work with this Blueprint.
