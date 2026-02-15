@@ -290,7 +290,7 @@ async function loadBundle(){
     // Navigate to ?page= param, hash target, or root page
     const params = new URLSearchParams(location.search);
     const pageParam = params.get('page');
-    const hashRef = location.hash.slice(1);
+    const hashRef = decodeURIComponent(location.hash.slice(1));
     const initRef = (pageParam && pageIndex[pageParam]) ? pageParam
       : (hashRef && pageIndex[hashRef]) ? hashRef
       : (bundle.rootRef || Object.keys(pageIndex)[0]);
