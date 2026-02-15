@@ -1,27 +1,26 @@
-You can’t do 2-week iterations with hardware!” This is the first thing you’ll hear when talk turns to Agile methods in hardware-software product development.
-A mix of existing robust hardware development ideas, plus a few newly taken from Agile software are being used now by real teams, even to get around - or through - the challenge of doing fast iterations (Nancy Van Schooenderwoert)
+//"You can't do 2-week iterations with hardware!" This is the first thing you'll hear when talk turns to Agile methods in hardware-software product development.//
+//A mix of existing robust hardware development ideas, plus a few newly taken from Agile software are being used now by real teams, even to get around - or through - the challenge of doing fast iterations (Nancy Van Schooenderwoert)//
 
-==== Articles ====
+=== Articles ===
 
 * [[Yes, Hardware Can Be Agile! (Nancy Van Schooenderwoert)>>url:https://www.infoq.com/articles/hardware-can-be-agile/]]
-* [[Applying Agile To Hardware Development …We’re Not That Different After All! (Neil Johnson XtremeEDA)>>url:https://www.agilealliance.org/wp-content/uploads/2016/01/applying-agile-to-ic-development.pdf]]
+* [[Applying Agile To Hardware Development …We're Not That Different After All! (Neil Johnson XtremeEDA)>>url:https://www.agilealliance.org/wp-content/uploads/2016/01/applying-agile-to-ic-development.pdf]]
 * [[An Agile approach to building RISC-V microprocessors (berkeley.edu)>>url:https://people.eecs.berkeley.edu/~~bora/Journals/2016/IEEEMicro16.pdf]]
 * [[Creating an Agile Hardware Design Flow (stanford.edu)>>url:https://cs.stanford.edu/~~niemetz/publications/2020/DAC2020.pdf]]
 * [[Using Agile Methods For Hardware (semiengineering.com)>>url:https://semiengineering.com/using-agile-methods-for-hardware/]]
 * [[Applying agile methodologies to IC design (techdesignforums.com)>>url:https://www.techdesignforums.com/practice/technique/agile-ic-methodology/]]
-* [[Agile for Hardware Development.pdf (agileforhardware.org)>>url:https://sonova.sharepoint.com/teams/G-SO-RD-ProjectManagementCommunity/Managed%20Documents/Methods%20and%20Formats/Agile%20for%20Hardware%20Development.pdf?CT=1620468070488&OR=ItemsView]]
 * [[Applying Agile To Hardware Development (agilealliance.org)>>url:https://www.agilealliance.org/wp-content/uploads/2016/01/applying-agile-to-ic-development.pdf]]
 * [[A Journey of Change in the Aircraft Industry (saabaircraftindustry.com)>>url:https://saabaircraftindustry.com/en/roads-to-new-capability/development-skills/agile-methods-in-software-development/]]
-* [[Agile In Military Hardware - How the SAAB Gripen became the world’s most cost effective military aircraft (scrumalliance.org)>>url:https://www.scrumalliance.org/ScrumRedesignDEVSite/media/ScrumAllianceMedia/Global%20Scrum%20Gatherings/2017%20San%20Diego/Presentations/JusticeJoe_Agile_In_Military_Hardware_SGSD.pdf]]
+* [[Agile In Military Hardware - How the SAAB Gripen became the world's most cost effective military aircraft (scrumalliance.org)>>url:https://www.scrumalliance.org/ScrumRedesignDEVSite/media/ScrumAllianceMedia/Global%20Scrum%20Gatherings/2017%20San%20Diego/Presentations/JusticeJoe_Agile_In_Military_Hardware_SGSD.pdf]]
 * [[Why Agile Is A Good Fit For ASIC and FPGA Development (AgileSoC)>>url:http://agilesoc.com/articles/why-agile-is-a-good-fit-for-asic-and-fpga-development/]]
 * [[What is Agile Hardware Development? ~| Hardware and Software ~| (agileforhardware.com)>>url:https://www.agileforhardware.com/what-is-agile-hardware-development/]]
 * [[Agile approach to design might help get FPGA based products to market more quickly (newelectronics.co.uk)>>url:https://www.newelectronics.co.uk/electronics-technology/agile-approach-to-design-might-help-get-fpga-based-products-to-market-more-quickly/112432/]]
 * [[Creating an Agile Hardware Design Process in PCB Development ~| NWES Blog (nwengineeringllc.com)>>url:https://www.nwengineeringllc.com/article/creating-an-agile-hardware-design-process-in-pcb-development.php]]
-* [[Agile Design for Hardware, Part I ~| EE Times>>url:https://www.eetimes.com/agile-design-for-hardware-part-i/]] , [[Agile Design for Hardware, Part II ~| EE Times>>url:https://www.eetimes.com/agile-design-for-hardware-part-ii/]]
+* [[Agile Design for Hardware, Part I ~| EE Times>>url:https://www.eetimes.com/agile-design-for-hardware-part-i/]] , [[Agile Design for Hardware, Part II ~| EE Times>>url:https://www.eetimes.com/agile-design-for-hardware-part-ii/]]
 * [[Using Agile in Hardware Development & Manufacturing? (intland.com)>>url:https://content.intland.com/blog/agile/using-agile-in-hardware-development-manufacturing]]
 * [[Mixing Agile and Waterfall Development at Scale: A Technical perspective - Scaled Agile Framework>>url:https://www.scaledagileframework.com/technical-strategies-for-agile-and-waterfall-interoperability-at-scale/]]
 
-==== Videos ====
+=== Videos ===
 
 * [[Hardware Software Collaboration in Agile Organizations (Nancy van Schooenderwoert)>>url:https://www.youtube.com/watch?v=uY4tygKGTxA]]
 * [[Meetup: Agile Hardware with Joe Justice - YouTube>>url:https://www.youtube.com/watch?v=R2e5uMLJgms]]

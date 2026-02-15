@@ -237,6 +237,34 @@ try {
                 $response.OutputStream.Write($msg, 0, $msg.Length)
             }
         }
+        # Serve image attachments from _attachments/ directories (flat namespace)
+        elseif ($requestPath.StartsWith('attachments/') -and $wikiRoot -and (Test-Path $wikiRoot)) {
+            $fileName = [Uri]::UnescapeDataString($requestPath.Substring(12))
+            # Search all _attachments/ directories for this filename
+            $found = $null
+            foreach ($attDir in (Get-ChildItem -Path $wikiRoot -Recurse -Directory -Filter '_attachments')) {
+                $candidate = Join-Path $attDir.FullName $fileName
+                if (Test-Path $candidate -PathType Leaf) {
+                    $found = $candidate
+                    break
+                }
+            }
+            if ($found) {
+                $ext = [System.IO.Path]::GetExtension($found)
+                $contentType = $mimeTypes[$ext]
+                if (-not $contentType) { $contentType = 'application/octet-stream' }
+                $fileBytes = [System.IO.File]::ReadAllBytes($found)
+                $response.ContentType = $contentType
+                $response.ContentLength64 = $fileBytes.Length
+                $response.Headers.Add('Access-Control-Allow-Origin', '*')
+                $response.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
+                Write-Host "  $(Get-Date -Format 'HH:mm:ss') GET /$requestPath" -ForegroundColor DarkGray
+            } else {
+                $response.StatusCode = 404
+                $msg = [System.Text.Encoding]::UTF8.GetBytes("Attachment not found: $fileName")
+                $response.OutputStream.Write($msg, 0, $msg.Length)
+            }
+        }
         # Serve wiki files from content directory
         elseif ($requestPath.StartsWith('wiki/') -and $wikiRoot -and (Test-Path $wikiRoot)) {
             $wikiRelPath = [Uri]::UnescapeDataString($requestPath.Substring(5))

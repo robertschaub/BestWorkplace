@@ -1,7 +1,4 @@
-(% class="box infomessage" %)
-(((
-💡** Consider [[OKR - Objectives and Key Results>>doc:Knowledge.Leadership to foster Innovation.OKR - Objectives and Key Results.WebHome]] instead of KPI's**
-)))
+{{info}}**Consider [[OKR - Objectives and Key Results>>doc:Knowledge.Leadership to foster Innovation.OKR - Objectives and Key Results.WebHome]] instead of KPI's.**{{/info}}
 
 === Metrics have to solve a problem ===
 
@@ -15,17 +12,17 @@
 
 [[image:1758356560205-261.png||height="214" width="387"]]
 
-[[geckoboard: Leading vs lagging indicators: what are they, and why do they matter for your business?>>url:https://www.geckoboard.com/blog/leading-lagging-or-lost-how-to-find-the-right-key-performance-indicators-for-your-sales-team/]]
+[[Leading vs Lagging Indicators: What Are They, and Why Do They Matter? (Geckoboard)>>url:https://www.geckoboard.com/blog/leading-lagging-or-lost-how-to-find-the-right-key-performance-indicators-for-your-sales-team/]]
 
 === You get what you measure ===
 
 [[image:1758356629399-360.png||height="185" width="386"]]
 
-[[https:~~/~~/martinfowler.com/articles/useOfMetrics.html>>url:https://martinfowler.com/articles/useOfMetrics.html]]
+[[An Appropriate Use of Metrics (Martin Fowler)>>url:https://martinfowler.com/articles/useOfMetrics.html]]
 
 [[image:1758356641069-436.png||height="101" width="419"]]
 
-[[https:~~/~~/jeffgothelf.com/blog/how-blending-lean-agile-and-design-thinking-will-transform-your-team/>>url:https://jeffgothelf.com/blog/how-blending-lean-agile-and-design-thinking-will-transform-your-team/]]
+[[How Blending Lean, Agile, and Design Thinking Will Transform Your Team (Jeff Gothelf)>>url:https://jeffgothelf.com/blog/how-blending-lean-agile-and-design-thinking-will-transform-your-team/]]
 
 === [[KPIs, Velocity, and Other Destructive Metrics ~| Allen Holub>>url:https://holub.com/kpis-velocity-and-other-destructive-metrics/]] ===
 
@@ -47,24 +44,23 @@ So, what internal performance-related things might be worth measuring? :
 
 == From Pluralsight ==
 
-[[Measuring Business Agility>>url:https://sonova.sharepoint.com/:v:/t/G-SO-RD-AgileCollaborationCommunity/EaSP-UuALDJAtTeQNeM6--EBNimoOkZ-CbloD3CupC_KCg?e=4UXSTQ]] Excerpt from [[Advanced Topics in Scaling Agile>>url:https://app.pluralsight.com/courses/b0a0835d-dcdf-4447-98aa-f7e7206e2ae1/table-of-contents]] By [[Tommy van Schaik>>url:https://app.pluralsight.com/profile/author/tommy-vanschaik]] [[pluralsight.com>>url:http://pluralsight.com]] 
+Excerpt from [[Advanced Topics in Scaling Agile>>url:https://app.pluralsight.com/courses/b0a0835d-dcdf-4447-98aa-f7e7206e2ae1/table-of-contents]] By [[Tommy van Schaik>>url:https://app.pluralsight.com/profile/author/tommy-vanschaik]] [[pluralsight.com>>url:http://pluralsight.com]] 
 
-Slides: [[measuring-business-agility-slides.pdf>>url:https://sonova.sharepoint.com/:b:/t/G-SO-RD-AgileCollaborationCommunity/EXw2Z_IrsopBnMHdD8o14EwBN7nU8RoiE4-CV_hw-LD4nw?e=Y1499A]]
 [[image:1758356668371-504.png||height="308" width="533"]]
 
 See also: [[Understanding Agile Risk Management, Metrics, Stakeholder Management, and Agile Contracts ~| by Chuck Cobb Pluralsight>>url:https://app.pluralsight.com/library/courses/agile-risk-metrics-stakeholder-management]]
 
 == From SAFe ==
 
-[[https:~~/~~/www.scaledagileframework.com/measure-and-grow/>>url:https://www.scaledagileframework.com/measure-and-grow/]]
+[[Measure and Grow (SAFe)>>url:https://www.scaledagileframework.com/measure-and-grow/]]
 [[image:1758356720637-512.png||height="725" width="608"]]
 
 == From Mc Kinsey ==
 
-[[https:~~/~~/www.mckinsey.com/business-functions/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact>>url:https://www.mckinsey.com/business-functions/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact]]
+[[Enterprise Agility: Buzz or Business Impact? (McKinsey)>>url:https://www.mckinsey.com/business-functions/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact]]
 [[image:1758356778140-326.png]]
 
 == From Seapoint Center ==
 
-[[https:~~/~~/seapointcenter.com/benchmarks-of-team-excellence/>>url:https://seapointcenter.com/benchmarks-of-team-excellence/]]
+[[Benchmarks of Team Excellence (Seapoint Center)>>url:https://seapointcenter.com/benchmarks-of-team-excellence/]]
 [[image:1758356797039-396.png||height="446" width="416"]]

@@ -729,13 +729,25 @@ class XWikiParser {
       this.wikiLinks.push(ref);
       return `<a class="wiki-link" data-wiki-ref="${this.esc(ref)}" href="javascript:void(0)" onclick="navigateToRef('${this.escAttr(ref)}')">${label}</a>`;
     });
-    text=text.replace(/\[\[(?!https?:\/\/)([^\]]+?)\]\]/g,(m,ref)=>{
+    text=text.replace(/\[\[(?!https?:\/\/|image:)([^\]]+?)\]\]/g,(m,ref)=>{
       const clean=ref.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
       this.wikiLinks.push(clean);
       return `<a class="wiki-link" data-wiki-ref="${this.esc(clean)}" href="javascript:void(0)" onclick="navigateToRef('${this.escAttr(clean)}')">${ref}</a>`;
     });
-    text=text.replace(/\[\[image:([^\]|]+?)(?:\|[^\]]*)?\]\]/g,'<img src="$1" alt="image">');
-    text=text.replace(/image:(https?:\/\/\S+)/g,'<img src="$1" alt="image">');
+    text=text.replace(/\[\[image:([^\]|]+?)(?:\|\|([^\]]*))?]]/g,function(m,src,params){
+      var s=src.trim();
+      if(!/^https?:\/\//.test(s)) s='attachments/'+encodeURIComponent(s);
+      var a='';
+      if(params){
+        var wm=params.match(/width="(\d+)"/);
+        var hm=params.match(/height="(\d+)"/);
+        var am=params.match(/alt="([^"]+)"/);
+        if(wm)a+=' width="'+wm[1]+'"';
+        if(hm)a+=' height="'+hm[1]+'"';
+        if(am)a+=' alt="'+am[1]+'"';
+      }
+      return '<img src="'+s+'"'+(a||' alt="image"')+'>';
+    });
     text=text.replace(/\\\\/g,'<br>');
     return text;
   }

@@ -4,12 +4,12 @@
 
 === [[Agile Teams>>url:https://www.scaledagileframework.com/agile-teams/]] ===
 
-💡 **Not all agile teams must be organized as Scrum Teams**
+{{info}}**Not all agile teams must be organized as Scrum Teams**{{/info}}
 
-* There are alternatives, especially Kanban and [[Scrumban - a synthesis of Scrum and Kanban>>url:https://sonova-my.sharepoint.com/:p:/p/robert_schaub/EWhiVN0JDlJLn198f6vK86oBOMrL_SkZolELPbp83sqIOg?e=0L004O]].
+* There are alternatives, especially Kanban and Scrumban (a synthesis of Scrum and Kanban).
 * But all agile teams should have a Product Owner and an Agile Coach (Scrum Master) 
 
-💡 **Agile Coach (Scrum Master) / Product Owner: Different roles, different personalities → different persons.**
+{{info}}**Agile Coach (Scrum Master) / Product Owner: Different roles, different personalities → different persons.**{{/info}}
 
 * PO is usually a 100% Job.
 * Agile Coach (Scrum Master) at least 30% FTE effort per team.
@@ -38,7 +38,7 @@ The primary goal of an **Agile Product Owner **is to represent the customer to 
 
 ----
 
-=== [["Owning" a "Product">>url:https://sonova.sharepoint.com/:b:/r/teams/G-SO-RD-AgileCollaborationCommunity/Shared%20Documents/Role%20-%20Product%20Owner/0-Product-Owner-AMA-Roman-Pichler.pdf?csf=1&web=1&e=O8JN2A&xsdata=MDN8MDF8fGJlZjUzOTRjZWUwZjQwYjM5NmMzZGRlZGQwYWM1ZmY0fGYxZWQwNzAxMjk0ZTQwNGNhMTNiZjgxZjcwN2Y4NDVifDB8MHw2Mzc4NjM5Njc4NjQyMDk1NDB8R29vZHxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT0%3D&sdata=bnZhd2N3S1VpN1R4ZmdZZUMzMTNxN3dkeDllQ1BpY1kyQ3RUbmxTTmk0TT0%3D&ovuser=f1ed0701-294e-404c-a13b-f81f707f845b%2CBeat.King%40sonova.com]] ===
+=== "Owning" a "Product" ===
 
 [[image:1758370783495-102.png||height="411" width="655"]]
 
@@ -103,16 +103,15 @@ We are aware of who is using our work; our users can be external and internal pe
 (% class="wikigeneratedid" id="HStream-alignedteamsprimarilyserveexternalusers2Cwhileotherteamsalsosupportinternalusers" %)
 Stream-aligned teams primarily serve external users, while other teams also support internal users - see [[Team Topologies>>doc:Knowledge.Team Topologies.WebHome]]
 
-💡** When you work on something, always think about who is using your work**
+{{info}}**When you work on something, always think about who is using your work.**{{/info}}
 
 ----
 
 == More related links ==
 
-==== Agile Team and Roles ====
+=== Agile Team and Roles ===
 )))
 
 * [[Hands-on Agile : The Product Owner (Roman Pichler) - Video>>url:https://www.youtube.com/watch?v=LbXzaHaorTc]]
-* [[Hands-on Agile : The Product Owner (Roman Pichler) - Slides>>url:https://sonova.sharepoint.com/:b:/r/teams/G-SO-RD-AgileCollaborationCommunity/Shared%20Documents/Role%20-%20Product%20Owner/0-Product-Owner-AMA-Roman-Pichler.pdf?csf=1&web=1&e=O8JN2A&xsdata=MDN8MDF8fGJlZjUzOTRjZWUwZjQwYjM5NmMzZGRlZGQwYWM1ZmY0fGYxZWQwNzAxMjk0ZTQwNGNhMTNiZjgxZjcwN2Y4NDVifDB8MHw2Mzc4NjM5Njc4NjQyMDk1NDB8R29vZHxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT0%3D&sdata=bnZhd2N3S1VpN1R4ZmdZZUMzMTNxN3dkeDllQ1BpY1kyQ3RUbmxTTmk0TT0%3D&ovuser=f1ed0701-294e-404c-a13b-f81f707f845b%2CBeat.King%40sonova.com]]
 * [[Can the Scrum Master also be the Product Owner?>>url:https://www.agilesocks.com/combining-scrum-roles-scrum-master-product-owner/]]
 * [[The Scrum Guide>>url:https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf]]
