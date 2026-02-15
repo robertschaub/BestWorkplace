@@ -66,8 +66,6 @@ if (-not (Test-Path $viewerPath)) {
     exit 1
 }
 
-$viewerContent = [System.IO.File]::ReadAllBytes($viewerPath)
-
 # The Best Workplace wiki directory for auto-loading
 $wikiRoot = Join-Path (Split-Path $scriptDir) 'The Best Workplace'
 $wikiExists = Test-Path $wikiRoot
@@ -215,8 +213,9 @@ try {
 
         $requestPath = $request.Url.LocalPath.TrimStart('/')
 
-        # Serve the viewer HTML for root or viewer path
+        # Serve the viewer HTML for root or viewer path (re-read each request for dev)
         if ($requestPath -eq '' -or $requestPath -eq 'xwiki-viewer.html') {
+            $viewerContent = [System.IO.File]::ReadAllBytes($viewerPath)
             $response.ContentType = 'text/html; charset=utf-8'
             $response.ContentLength64 = $viewerContent.Length
             $response.Headers.Add('Access-Control-Allow-Origin', '*')
