@@ -61,7 +61,7 @@ Copy the template below and fill in the `{PLACEHOLDERS}`. Use this for complex t
 
 ## Your Role
 **Role:** {ROLE}
-<!-- Options: Technical Writer | Product Strategist | DevOps Expert -->
+<!-- Options: Technical Writer | Content Strategist | DevOps Expert | Viewer Developer -->
 
 ---
 
@@ -128,7 +128,7 @@ Example:
 <!--
 List any existing documents this task builds on.
 Example:
-- Docs/WIP/Knowledge_Reorganization_Plan.md (Draft by Product Strategist)
+- Docs/WIP/Knowledge_Reorganization_Plan.md (Draft by Content Strategist)
 -->
 
 ---
@@ -145,7 +145,7 @@ Any final task-specific instructions.
 Example:
 - Start by reading the existing Knowledge section pages
 - Preview changes locally with View.cmd before committing
-- Coordinate with the Product Strategist for content direction
+- Coordinate with the Content Strategist for content direction
 -->
 
 ---
@@ -217,13 +217,13 @@ Now proceed with your task as Technical Writer.
 
 ---
 
-## Example 2: Product Strategist - Content Review
+## Example 2: Content Strategist - Content Review
 
 ```markdown
 # BestWorkplace Task Assignment
 
 ## Your Role
-**Role:** Product Strategist
+**Role:** Content Strategist
 
 ---
 
@@ -272,7 +272,7 @@ Start by reading the root WebHome.xwiki to understand the vision, then review ea
 
 ---
 
-Now proceed with your task as Product Strategist.
+Now proceed with your task as Content Strategist.
 ```
 
 ---
@@ -340,10 +340,10 @@ Now proceed with your task as DevOps Expert.
 
 | Document Type | Purpose | Typical Author |
 |---------------|---------|----------------|
-| `_Plan.md` | Implementation plan with steps | Product Strategist |
+| `_Plan.md` | Implementation plan with steps | Content Strategist |
 | `_Review.md` | Review comments and feedback | Any reviewer |
 | `_Analysis.md` | Investigation findings | Any analyst |
-| `_Content_Audit.md` | Content review and recommendations | Product Strategist |
+| `_Content_Audit.md` | Content review and recommendations | Content Strategist |
 | `_Doc_Review.md` | Documentation review | Technical Writer |
 
 ---

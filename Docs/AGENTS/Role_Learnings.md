@@ -42,7 +42,11 @@ After completing a task, if you discovered something that would help future agen
 **Learning:** `build_ghpages.py` has `inject_titles()` which prepends an `= Title =` heading to pages that don't start with one. The title is derived from the parent directory name for WebHome files. 14 of 20 BestWorkplace pages needed injected titles. If you want a different title, add your own `= My Title =` as the first line — the injector skips pages that already have a heading.
 **Files:** `Docs/xwiki-pages/scripts/build_ghpages.py` (`inject_titles`, `_derive_title`, `_has_heading`)
 
-## Product Strategist
+## Content Strategist
+
+_(No entries yet)_
+
+## Viewer Developer
 
 _(No entries yet)_
 

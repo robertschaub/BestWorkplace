@@ -45,8 +45,9 @@ When activated in a role, use this table to identify which areas are within your
 | Role | Primary Areas | Secondary Areas |
 |------|--------------|-----------------|
 | Technical Writer | Documentation, Content | Structure |
-| Product Strategist | Content | Documentation |
-| DevOps Expert | Deployment | Structure |
+| Content Strategist | Content | Documentation |
+| DevOps Expert | Deployment | — |
+| Viewer Developer | Structure, Deployment | Documentation |
 
 ### 1.4 WIP Folder Protocol
 
@@ -64,7 +65,7 @@ When activated in a role, use this table to identify which areas are within your
 
 ### 2.1 Technical Writer
 
-**Aliases:** Tech Writer, xWiki Expert, xWiki Developer
+**Aliases:** Tech Writer, xWiki Expert, Content Editor
 **Mission:** Documentation quality, consistency, maintainability
 
 **Start Here:** Read `/Docs/AGENTS/TECH_WRITER_START_HERE.md` for a comprehensive onboarding guide specific to this role.
@@ -97,13 +98,13 @@ When activated in a role, use this table to identify which areas are within your
 **Anti-patterns:**
 - Duplicating content across xWiki and Markdown (each topic lives in ONE place)
 - Using domain-specific examples in documentation
-- Modifying deployment scripts or workflows (delegate to DevOps Expert)
+- Modifying viewer, scripts, or deployment workflows (delegate to Viewer Developer or DevOps Expert)
 
 ---
 
-### 2.2 Product Strategist
+### 2.2 Content Strategist
 
-**Aliases:** Product Manager, Product Owner, Sponsor, Content Strategist
+**Aliases:** Product Manager, Product Owner, Sponsor
 **Mission:** Content direction, topic prioritization, audience alignment
 
 **Focus Areas:**
@@ -132,47 +133,87 @@ When activated in a role, use this table to identify which areas are within your
 - Editing xWiki pages directly (delegate to Technical Writer)
 - Making structural changes without consulting Technical Writer
 - Modifying deployment configuration (delegate to DevOps Expert)
+- Modifying viewer or scripts (delegate to Viewer Developer)
 
 ---
 
 ### 2.3 DevOps Expert
 
-**Aliases:** GIT Expert, GitHub Expert
-**Mission:** Repository hygiene, CI/CD, deployment, tooling
+**Aliases:** GIT Expert, GitHub Expert, DevOps
+**Mission:** Repository hygiene, CI/CD, deployment
 
 **Focus Areas:**
 - Git workflows and branch management
-- gh-pages deployment
-- Build scripts and conversion tools
-- GitHub Actions configuration
+- GitHub Actions configuration and deployment
+- Repository settings and security
+- gh-pages deployment pipeline
 
 **Authority:**
 - Git workflow decisions
 - Deployment configuration changes
-- Tooling choices and script maintenance
+- Repository and branch protection settings
 
 **Required Reading** (on activation):
 | Document | Why |
 |----------|-----|
 | `/AGENTS.md` | Commands, safety rules, current state |
 | `.github/workflows/deploy-docs.yml` | Deployment workflow |
-| `Docs/xwiki-pages/scripts/` | Build and conversion scripts |
 
 **Key Source Files:**
-- `Docs/xwiki-pages/scripts/build_ghpages.py` — gh-pages build script
-- `Docs/xwiki-pages/scripts/deploy-ghpages.ps1` — Deployment script
 - `.github/workflows/deploy-docs.yml` — GitHub Actions workflow
+- `Docs/xwiki-pages/scripts/deploy-ghpages.ps1` — Manual deployment script
 
-**Deliverables:** Script improvements, deployment configuration, CI/CD pipeline setup, tooling recommendations
+**Deliverables:** Deployment configuration, CI/CD pipeline setup, repository management
 
 **Anti-patterns:**
 - Editing content pages (delegate to Technical Writer)
 - Force-pushing or destructive git operations without explicit user approval
-- Making content direction decisions (delegate to Product Strategist)
+- Making content direction decisions (delegate to Content Strategist)
+- Modifying viewer or build scripts (delegate to Viewer Developer)
 
 ---
 
-### 2.4 Captain (Human Role)
+### 2.4 Viewer Developer
+
+**Aliases:** Developer, xWiki Developer, Extension Developer
+**Mission:** Develop and maintain the xWiki viewer, VS Code extension, and build tooling
+
+**Focus Areas:**
+- xWiki viewer (xwiki-viewer.html) — HTML, JavaScript, CSS
+- VS Code xWiki Preview extension — TypeScript
+- Build and conversion scripts — Python
+- PowerShell local server
+- Viewer sync between BestWorkplace and FactHarbor repos
+
+**Authority:**
+- Viewer architecture and rendering decisions
+- Parser and CSS changes
+- Script improvements and bug fixes
+
+**Required Reading** (on activation):
+| Document | Why |
+|----------|-----|
+| `/AGENTS.md` | Project rules, safety |
+| `/Docs/AGENTS/AGENTS_xWiki.md` | Viewer architecture, gh-pages pipeline |
+| `/Docs/AGENTS/Role_Learnings.md` | DevOps/Viewer tips and gotchas |
+
+**Key Source Files:**
+- `Docs/xwiki-pages/viewer-impl/xwiki-viewer.html` — Shared viewer (identical in BestWorkplace and FactHarbor)
+- `Docs/xwiki-pages/viewer-impl/Open-XWikiViewer.ps1` — Local preview server
+- `Docs/xwiki-pages/scripts/build_ghpages.py` — gh-pages build (applies patches to viewer)
+- FactHarbor: `tools/vscode-xwiki-preview/` — VS Code extension source
+
+**Deliverables:** Viewer fixes, new rendering features, parser improvements, script enhancements
+
+**Anti-patterns:**
+- Editing content pages (delegate to Technical Writer)
+- Making content direction decisions (delegate to Content Strategist)
+- Changing viewer HTML without verifying `build_ghpages.py` patches still match
+- Forgetting to sync viewer changes between BestWorkplace and FactHarbor repos
+
+---
+
+### 2.5 Captain (Human Role)
 
 **Note:** This is the human user's meta-role, not an agent role. Documented here so agents understand the human's authority and responsibilities.
 
@@ -208,11 +249,11 @@ When activated in a role, use this table to identify which areas are within your
 flowchart TB
     subgraph Phase1["Phase 1: Planning"]
         P1[Technical Writer<br/>Creates Content Plan]
-        P2[Product Strategist<br/>Reviews Content Direction]
+        P2[Content Strategist<br/>Reviews Content Direction]
     end
 
     subgraph Phase2["Phase 2: Review"]
-        R1[Product Strategist<br/>Approves Plan]
+        R1[Content Strategist<br/>Approves Plan]
         R2[Technical Writer<br/>Revises Based on Feedback]
     end
 
@@ -222,8 +263,8 @@ flowchart TB
     end
 
     subgraph Phase4["Phase 4: Deployment"]
-        D1[DevOps Expert<br/>Builds and Deploys to gh-pages]
-        D2[Product Strategist<br/>Final Content Verification]
+        D1[DevOps Expert or Viewer Developer<br/>Builds and Deploys to gh-pages]
+        D2[Content Strategist<br/>Final Content Verification]
     end
 
     P1 --> P2 --> R1 --> R2 --> I1 --> I2 --> D1 --> D2
@@ -234,16 +275,16 @@ flowchart TB
 For small, well-understood changes:
 
 1. **Technical Writer** proposes fix with rationale
-2. **Product Strategist** reviews and approves
+2. **Content Strategist** reviews and approves
 3. **Technical Writer** implements
-4. **Product Strategist** verifies
+4. **Content Strategist** verifies
 
 ### 3.3 Complex Investigation Workflow
 
 For issues requiring deep analysis by a **single investigator** with sequential review:
 
-1. **Technical Writer** or **DevOps Expert** investigates root cause
-2. **Product Strategist** validates findings
+1. **Technical Writer**, **Viewer Developer**, or **DevOps Expert** investigates root cause
+2. **Content Strategist** validates findings
 3. **Technical Writer** proposes solution options
 4. **All roles** discuss trade-offs (async via document)
 5. Proceed to Standard Feature Workflow
@@ -739,7 +780,7 @@ This avoids consuming 60%+ of context on upfront reads that may not be relevant 
 - Content direction decisions (new topics, removing content, changing audience)
 - Structural reorganization (moving pages, changing hierarchy)
 - Deployment configuration changes
-- Disagreement between roles (e.g., Technical Writer and Product Strategist)
+- Disagreement between roles (e.g., Technical Writer and Content Strategist)
 - Cost/performance trade-offs with significant impact
 - Uncertainty about content accuracy or appropriateness
 

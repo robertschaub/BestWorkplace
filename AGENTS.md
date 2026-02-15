@@ -68,10 +68,11 @@ When the user starts with "As \<Role\>" or assigns you a role mid-conversation:
 
 | User Says | Maps To | Registry Section |
 |-----------|---------|-----------------|
-| "Tech Writer", "xWiki Expert", "xWiki Developer" | Technical Writer | §2.1 |
-| "Product Manager", "Product Owner", "Sponsor", "Content Strategist" | Product Strategist | §2.2 |
+| "Tech Writer", "xWiki Expert", "Content Editor" | Technical Writer | §2.1 |
+| "Product Manager", "Product Owner", "Sponsor" | Content Strategist | §2.2 |
 | "GIT Expert", "GitHub Expert", "DevOps" | DevOps Expert | §2.3 |
-| "Agents Supervisor" | Captain (human role) | §2.4 |
+| "Developer", "xWiki Developer", "Extension Developer" | Viewer Developer | §2.4 |
+| "Agents Supervisor" | Captain (human role) | §2.5 |
 
 **If the role is NOT in the table above:**
 1. Tell the user which existing role is closest (if any) and ask whether to use that one
