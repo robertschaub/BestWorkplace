@@ -997,24 +997,13 @@ function contentHasHeading(src){
   }
   return false;
 }
-// Extract the text of the first heading found anywhere in content
-function extractFirstHeading(src){
-  for(const line of src.split('\n')){
-    const m = line.trim().match(/^(={1,6})\s+(.*?)\s*\1\s*$/);
-    if(m){
-      // Strip xWiki inline formatting: // (italic), ** (bold)
-      return m[2].replace(/\/\//g,'').replace(/\*\*/g,'').trim();
-    }
-  }
-  return '';
-}
-
 async function renderPreview(){
   let src = editorEl.value;
   // Auto-inject title for pages that lack a heading at the first line
   if(!contentHasHeading(src)){
-    // Prefer the actual heading from content over the derived folder name
-    const title = extractFirstHeading(src) || derivePageTitle(currentPageRef);
+    // Use displayTitle from _meta.json if available, else derive from ref
+    const page = pageIndex[currentPageRef];
+    const title = (page && page.displayTitle) || derivePageTitle(currentPageRef);
     if(title) src = `= ${title} =\n\n${src}`;
   }
   let html = parser.parse(src);
@@ -1230,12 +1219,6 @@ async function loadPage(ref, addHistory=true){
     currentFileHandle = page.handle || null;
     currentSpace = page.segments.slice(0,-1);
 
-    // For translation files (WebHome.de etc.), extract H1 as display title
-    if(/^WebHome\.[a-z]{2}$/i.test(page.baseName) && !page.displayTitle){
-      const h = extractFirstHeading(text);
-      if(h) page.displayTitle = h;
-    }
-
     const hasHandle = !!page.handle;
     document.getElementById('filename').textContent = page.name;
     document.getElementById('filename').title = getPageRelPath(page);
@@ -1310,9 +1293,21 @@ function tryNavigateSpace(dotPath){
 // =================================================================
 // Directory Scanning & Page Index
 // =================================================================
+// Apply translation titles from _meta.json to page entries in the same folder.
+// meta format: { "translations": { "de": { "title": "..." }, ... } }
+function applyTranslationMeta(entries, meta){
+  if(!meta || !meta.translations) return;
+  for(const[lang, info] of Object.entries(meta.translations)){
+    const target = 'WebHome.'+lang;
+    const entry = entries.find(e => e.type==='file' && e.baseName===target);
+    if(entry && info.title) entry.displayTitle = info.title;
+  }
+}
+
 async function scanDirectory(dirH, prefix=[]){
   const entries = [];
   let sortOrder = null;
+  let meta = null; // _meta.json translation metadata
   for await(const entry of dirH.values()){
     if(entry.name.startsWith('.')) continue; // skip hidden
     if(entry.name === '_sort' && entry.kind === 'file'){
@@ -1321,6 +1316,10 @@ async function scanDirectory(dirH, prefix=[]){
         const text = await f.text();
         sortOrder = text.split('\n').map(l=>l.trim()).filter(l=>l && !l.startsWith('#'));
       } catch(e){ /* ignore */ }
+      continue;
+    }
+    if(entry.name === '_meta.json' && entry.kind === 'file'){
+      try { const f = await entry.getFile(); meta = JSON.parse(await f.text()); } catch(e){ /* ignore */ }
       continue;
     }
     if(entry.kind === 'file'){
@@ -1353,6 +1352,8 @@ async function scanDirectory(dirH, prefix=[]){
       }
     }
   }
+  // Apply translation titles from _meta.json
+  applyTranslationMeta(entries, meta);
   applySortOrder(entries, sortOrder);
   return entries;
 }
@@ -1415,34 +1416,11 @@ function renderTree(tree, depth=0){
     } else {
       html += `<div class="tree-item tree-page" data-ref="${esc(item.ref)}" style="padding-left:${8+pad+16}px" onclick="loadPage('${escAttr(item.ref)}')">
         <svg class="ti-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
-        <span class="ti-label">${esc(item.baseName)}</span>
+        <span class="ti-label">${esc(item.displayTitle || item.baseName)}</span>
       </div>`;
     }
   }
   return html;
-}
-
-// After tree render, read translation files (WebHome.LANG) and replace
-// their tree labels with the actual page title extracted from the H1.
-async function updateTranslationTreeLabels(){
-  const pat = /^WebHome\.[a-z]{2}$/i;
-  for(const ref of Object.keys(pageIndex)){
-    const page = pageIndex[ref];
-    if(!pat.test(page.baseName)) continue;
-    try {
-      let text = '';
-      if(page.content !== undefined) text = page.content;
-      else if(page.handle){ const f = await page.handle.getFile(); text = await f.text(); }
-      else if(page.fileObj) text = await page.fileObj.text();
-      else if(page.serverUrl){ const r = await fetch(page.serverUrl); if(r.ok) text = await r.text(); }
-      if(!text) continue;
-      const title = extractFirstHeading(text);
-      if(!title) continue;
-      page.displayTitle = title;
-      const el = document.querySelector(`.tree-page[data-ref="${CSS.escape(ref)}"] .ti-label`);
-      if(el) el.textContent = title;
-    } catch(e){ /* skip on error */ }
-  }
 }
 
 // Arrow click: toggle expand/collapse only
@@ -1601,7 +1579,7 @@ async function openFolderPicker(){
       pageIndex = buildPageIndex(tree);
       const count = Object.keys(pageIndex).length;
       document.getElementById('treeBody').innerHTML = renderTree(tree);
-      updateTranslationTreeLabels();
+
       document.getElementById('treeCount').textContent = `(${count})`;
       document.getElementById('treeSidebar').classList.remove('collapsed');
       addRecent(dirHandle.name,'folder');
@@ -1626,18 +1604,18 @@ document.getElementById('folderInput').addEventListener('change', async e => {
     const ext = '.'+f.name.split('.').pop().toLowerCase();
     return WIKI_EXTS.includes(ext);
   });
+  const metaFiles = files.filter(f => f.name === '_meta.json');
   if(!wikiFiles.length){ showToast('No wiki files found in folder'); e.target.value=''; return; }
 
   // Store all File objects keyed by relative path for reading later
   fallbackFiles = {};
-  const tree = buildTreeFromFileList(wikiFiles, rootName);
+  const tree = await buildTreeFromFileList(wikiFiles, rootName, metaFiles);
   pageTree = tree;
   pageIndex = buildPageIndex(tree);
   dirHandle = null; // no FS API handle in fallback mode
 
   const count = Object.keys(pageIndex).length;
   document.getElementById('treeBody').innerHTML = renderTree(tree);
-  updateTranslationTreeLabels();
   document.getElementById('treeCount').textContent = `(${count})`;
   document.getElementById('treeSidebar').classList.remove('collapsed');
   addRecent(rootName, 'folder');
@@ -1650,7 +1628,7 @@ document.getElementById('folderInput').addEventListener('change', async e => {
 });
 
 // Build hierarchical tree from flat file list (webkitdirectory)
-function buildTreeFromFileList(files, rootName){
+async function buildTreeFromFileList(files, rootName, metaFiles){
   // Group files by their path segments (skip root folder name)
   const root = [];
   const folderMap = {}; // path → children array
@@ -1693,6 +1671,23 @@ function buildTreeFromFileList(files, rootName){
       currentChildren = folderMap[folderPath];
     }
     currentChildren.push(entry);
+  }
+
+  // Read _meta.json files and apply translation titles per folder
+  if(metaFiles && metaFiles.length){
+    for(const mf of metaFiles){
+      try {
+        const mParts = mf.webkitRelativePath.split('/');
+        mParts.shift(); // remove root
+        mParts.pop();   // remove _meta.json
+        const folderPath = mParts.join('/');
+        const children = folderPath ? folderMap[folderPath] : root;
+        if(children){
+          const meta = JSON.parse(await mf.text());
+          applyTranslationMeta(children, meta);
+        }
+      } catch(e){ /* ignore */ }
+    }
   }
 
   // Sort recursively
@@ -1871,7 +1866,7 @@ async function handleDrop(dt){
           pageTree = tree; pageIndex = buildPageIndex(tree);
           const count = Object.keys(pageIndex).length;
           document.getElementById('treeBody').innerHTML = renderTree(tree);
-          updateTranslationTreeLabels();
+    
           document.getElementById('treeCount').textContent = `(${count})`;
           document.getElementById('treeSidebar').classList.remove('collapsed');
           addRecent(dirHandle.name,'folder');
@@ -1902,7 +1897,7 @@ async function handleDrop(dt){
             pageTree = tree; pageIndex = buildPageIndex(tree); dirHandle = null;
             const count = Object.keys(pageIndex).length;
             document.getElementById('treeBody').innerHTML = renderTree(tree);
-            updateTranslationTreeLabels();
+      
             document.getElementById('treeCount').textContent = `(${count})`;
             document.getElementById('treeSidebar').classList.remove('collapsed');
             addRecent(rootName,'folder');
@@ -2076,7 +2071,6 @@ async function loadFromServer(){
     dirHandle = null;
     const count = Object.keys(pageIndex).length;
     document.getElementById('treeBody').innerHTML = renderTree(tree);
-    updateTranslationTreeLabels();
     document.getElementById('treeCount').textContent = `(${count})`;
     document.getElementById('treeSidebar').classList.remove('collapsed');
     showEditor();
@@ -2091,6 +2085,7 @@ function buildTreeFromManifest(manifest){
   const root = [];
   const folderMap = {};
   const sorts = manifest.sorts || {};
+  const metas = manifest.metas || {};
   const wikiName = manifest.root || 'Wiki';
   for(const relPath of manifest.files){
     const parts = relPath.split('/');
@@ -2115,6 +2110,11 @@ function buildTreeFromManifest(manifest){
       currentChildren = folderMap[folderPath];
     }
     currentChildren.push(entry);
+  }
+  // Apply _meta.json translation titles from bundle
+  for(const[folderPath, meta] of Object.entries(metas)){
+    const children = folderPath ? folderMap[folderPath] : root;
+    if(children) applyTranslationMeta(children, meta);
   }
   applySortToTree(root, '', sorts);
   // Wrap in root folder so project name appears in sidebar (matches gh-pages structure)

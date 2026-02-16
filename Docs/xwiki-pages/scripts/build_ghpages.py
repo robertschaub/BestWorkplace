@@ -87,13 +87,14 @@ def find_repo_root() -> Path:
     return Path.cwd()
 
 
-def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
+def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str, Any]], Dict[str, str], Dict[str, Any]]:
     """
     Recursively scan directory for .xwiki files.
 
-    Returns (tree_structure, pages_dict) where:
+    Returns (tree_structure, pages_dict, metas_dict) where:
       - tree_structure: hierarchical list matching the viewer's scanDirectory() format
       - pages_dict: flat dict mapping ref -> content string
+      - metas_dict: dict mapping folder_path -> parsed _meta.json content
 
     The output matches what the JavaScript viewer produces when you open a folder,
     so renderTree() and buildPageIndex() can consume it directly.
@@ -103,16 +104,28 @@ def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str
 
     entries: List[Dict[str, Any]] = []
     pages: Dict[str, str] = {}
+    metas: Dict[str, Any] = {}
 
     try:
         items = sorted(base_dir.iterdir(), key=lambda p: p.name.lower())
     except OSError:
-        return entries, pages
+        return entries, pages, metas
 
     sort_order = _read_sort_order(base_dir)
 
+    # Read _meta.json for translation metadata
+    meta_path = base_dir / '_meta.json'
+    meta = None
+    if meta_path.is_file():
+        try:
+            meta = json.loads(meta_path.read_text(encoding='utf-8'))
+            folder_path = '/'.join(prefix) if prefix else ''
+            metas[folder_path] = meta
+        except (OSError, json.JSONDecodeError):
+            pass
+
     for item in items:
-        if item.name.startswith('.') or item.name == SORT_FILE:
+        if item.name.startswith('.') or item.name == SORT_FILE or item.name == '_meta.json':
             continue
 
         if item.is_file() and item.suffix.lower() in WIKI_EXTS:
@@ -129,7 +142,7 @@ def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str
 
             pages[ref] = content
 
-            entries.append({
+            entry = {
                 'type': 'file',
                 'name': item.name,
                 'baseName': base_name,
@@ -137,10 +150,16 @@ def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str
                 'segments': segments,
                 'relPath': rel_path,
                 'parentPath': '.'.join(prefix)
-            })
+            }
+            # Apply translation title from _meta.json
+            if meta and meta.get('translations'):
+                for lang, info in meta['translations'].items():
+                    if base_name == f'WebHome.{lang}' and info.get('title'):
+                        entry['displayTitle'] = info['title']
+            entries.append(entry)
 
         elif item.is_dir():
-            children, sub_pages = scan_tree(item, prefix + [item.name])
+            children, sub_pages, sub_metas = scan_tree(item, prefix + [item.name])
             if children:
                 entries.append({
                     'type': 'folder',
@@ -149,11 +168,12 @@ def scan_tree(base_dir: Path, prefix: list | None = None) -> Tuple[List[Dict[str
                     'children': children
                 })
                 pages.update(sub_pages)
+                metas.update(sub_metas)
 
     # Sort: respect _sort file if present, otherwise folders first then alphabetical
     _apply_sort_order(entries, sort_order)
 
-    return entries, pages
+    return entries, pages, metas
 
 
 def find_root_ref(pages: Dict[str, str]) -> str:
@@ -287,7 +307,6 @@ async function loadBundle(){
     }
     const count = Object.keys(pageIndex).length;
     document.getElementById('treeBody').innerHTML = renderTree(pageTree);
-    updateTranslationTreeLabels();
     document.getElementById('treeCount').textContent = '('+count+')';
     document.getElementById('treeSidebar').classList.remove('collapsed');
     showEditor();
@@ -480,9 +499,11 @@ def main():
 
     # Scan content
     print(f'Scanning {content_dir} ...')
-    tree, pages = scan_tree(content_dir)
+    tree, pages, metas = scan_tree(content_dir)
     root_ref = find_root_ref(pages)
     print(f'  Found {len(pages)} pages, root: {root_ref}')
+    if metas:
+        print(f'  Found {len(metas)} _meta.json file(s)')
 
     # Inject titles for pages that don't have headings
     title_count = inject_titles(pages, content_dir)
@@ -510,7 +531,8 @@ def main():
         'rootRef': root_ref,
         'pageCount': len(pages),
         'tree': tree,
-        'pages': pages
+        'pages': pages,
+        'metas': metas
     }
 
     output_dir.mkdir(parents=True, exist_ok=True)
