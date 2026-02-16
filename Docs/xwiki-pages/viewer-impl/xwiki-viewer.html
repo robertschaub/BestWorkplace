@@ -981,7 +981,9 @@ function getChildPages(ref){
 
 function derivePageTitle(ref){
   if(!ref) return '';
-  const segs = ref.split('.').filter(s=>s.toLowerCase()!=='webhome');
+  // Treat WebHome.LANG (e.g. WebHome.de) as WebHome for title derivation
+  var cleaned = ref.replace(/\.WebHome\.[a-z]{2}$/i, '.WebHome').replace(/^WebHome\.[a-z]{2}$/i, 'WebHome');
+  const segs = cleaned.split('.').filter(s=>s.toLowerCase()!=='webhome');
   if(segs.length) return segs[segs.length-1];
   // Root WebHome — use wiki/folder name
   if(pageTree && pageTree[0] && pageTree[0].type==='folder') return pageTree[0].name;
@@ -995,12 +997,24 @@ function contentHasHeading(src){
   }
   return false;
 }
+// Extract the text of the first heading found anywhere in content
+function extractFirstHeading(src){
+  for(const line of src.split('\n')){
+    const m = line.trim().match(/^(={1,6})\s+(.*?)\s*\1\s*$/);
+    if(m){
+      // Strip xWiki inline formatting: // (italic), ** (bold)
+      return m[2].replace(/\/\//g,'').replace(/\*\*/g,'').trim();
+    }
+  }
+  return '';
+}
 
 async function renderPreview(){
   let src = editorEl.value;
-  // Auto-inject title for pages that lack a heading
+  // Auto-inject title for pages that lack a heading at the first line
   if(!contentHasHeading(src)){
-    const title = derivePageTitle(currentPageRef);
+    // Prefer the actual heading from content over the derived folder name
+    const title = extractFirstHeading(src) || derivePageTitle(currentPageRef);
     if(title) src = `= ${title} =\n\n${src}`;
   }
   let html = parser.parse(src);
@@ -1216,6 +1230,12 @@ async function loadPage(ref, addHistory=true){
     currentFileHandle = page.handle || null;
     currentSpace = page.segments.slice(0,-1);
 
+    // For translation files (WebHome.de etc.), extract H1 as display title
+    if(/^WebHome\.[a-z]{2}$/i.test(page.baseName) && !page.displayTitle){
+      const h = extractFirstHeading(text);
+      if(h) page.displayTitle = h;
+    }
+
     const hasHandle = !!page.handle;
     document.getElementById('filename').textContent = page.name;
     document.getElementById('filename').title = getPageRelPath(page);
@@ -1264,8 +1284,10 @@ function updateBreadcrumb(page){
     if(i>0) html += '<span class="bc-sep">›</span>';
     const isLast = i === segs.length-1;
     const partial = segs.slice(0,i+1).join('.');
+    // Use displayTitle for the last segment when available (e.g. translation pages)
+    const label = (isLast && page.displayTitle) ? page.displayTitle : segs[i];
     if(isLast){
-      html += `<span class="bc-item active">${esc(segs[i])}</span>`;
+      html += `<span class="bc-item active">${esc(label)}</span>`;
     } else {
       // Try to navigate to this space's index page
       html += `<span class="bc-item" onclick="tryNavigateSpace('${escAttr(partial)}')">${esc(segs[i])}</span>`;
@@ -1398,6 +1420,29 @@ function renderTree(tree, depth=0){
     }
   }
   return html;
+}
+
+// After tree render, read translation files (WebHome.LANG) and replace
+// their tree labels with the actual page title extracted from the H1.
+async function updateTranslationTreeLabels(){
+  const pat = /^WebHome\.[a-z]{2}$/i;
+  for(const ref of Object.keys(pageIndex)){
+    const page = pageIndex[ref];
+    if(!pat.test(page.baseName)) continue;
+    try {
+      let text = '';
+      if(page.content !== undefined) text = page.content;
+      else if(page.handle){ const f = await page.handle.getFile(); text = await f.text(); }
+      else if(page.fileObj) text = await page.fileObj.text();
+      else if(page.serverUrl){ const r = await fetch(page.serverUrl); if(r.ok) text = await r.text(); }
+      if(!text) continue;
+      const title = extractFirstHeading(text);
+      if(!title) continue;
+      page.displayTitle = title;
+      const el = document.querySelector(`.tree-page[data-ref="${CSS.escape(ref)}"] .ti-label`);
+      if(el) el.textContent = title;
+    } catch(e){ /* skip on error */ }
+  }
 }
 
 // Arrow click: toggle expand/collapse only
@@ -1556,6 +1601,7 @@ async function openFolderPicker(){
       pageIndex = buildPageIndex(tree);
       const count = Object.keys(pageIndex).length;
       document.getElementById('treeBody').innerHTML = renderTree(tree);
+      updateTranslationTreeLabels();
       document.getElementById('treeCount').textContent = `(${count})`;
       document.getElementById('treeSidebar').classList.remove('collapsed');
       addRecent(dirHandle.name,'folder');
@@ -1591,6 +1637,7 @@ document.getElementById('folderInput').addEventListener('change', async e => {
 
   const count = Object.keys(pageIndex).length;
   document.getElementById('treeBody').innerHTML = renderTree(tree);
+  updateTranslationTreeLabels();
   document.getElementById('treeCount').textContent = `(${count})`;
   document.getElementById('treeSidebar').classList.remove('collapsed');
   addRecent(rootName, 'folder');
@@ -1824,6 +1871,7 @@ async function handleDrop(dt){
           pageTree = tree; pageIndex = buildPageIndex(tree);
           const count = Object.keys(pageIndex).length;
           document.getElementById('treeBody').innerHTML = renderTree(tree);
+          updateTranslationTreeLabels();
           document.getElementById('treeCount').textContent = `(${count})`;
           document.getElementById('treeSidebar').classList.remove('collapsed');
           addRecent(dirHandle.name,'folder');
@@ -1854,6 +1902,7 @@ async function handleDrop(dt){
             pageTree = tree; pageIndex = buildPageIndex(tree); dirHandle = null;
             const count = Object.keys(pageIndex).length;
             document.getElementById('treeBody').innerHTML = renderTree(tree);
+            updateTranslationTreeLabels();
             document.getElementById('treeCount').textContent = `(${count})`;
             document.getElementById('treeSidebar').classList.remove('collapsed');
             addRecent(rootName,'folder');
@@ -2027,6 +2076,7 @@ async function loadFromServer(){
     dirHandle = null;
     const count = Object.keys(pageIndex).length;
     document.getElementById('treeBody').innerHTML = renderTree(tree);
+    updateTranslationTreeLabels();
     document.getElementById('treeCount').textContent = `(${count})`;
     document.getElementById('treeSidebar').classList.remove('collapsed');
     showEditor();

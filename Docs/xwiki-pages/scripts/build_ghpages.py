@@ -177,16 +177,19 @@ def _derive_title(file_path: Path) -> str:
 
 
 def _has_heading(content: str) -> bool:
-    """Check if the content already starts with a heading (= or ==)."""
-    for line in content.splitlines():
+    """Check if the content contains a heading within the first 30 lines.
+
+    Pages may start with xWiki style directives like (%...%) or table
+    markup before the actual heading appears inside a cell.  Scanning
+    a few dozen lines catches headings embedded in styled tables.
+    """
+    for line in content.splitlines()[:30]:
         stripped = line.strip()
         if not stripped:
             continue
         # xWiki heading: starts with = (H1) or == (H2) etc.
         if re.match(r'^={1,6}\s', stripped):
             return True
-        # Any non-empty, non-heading line means content starts without a heading
-        return False
     return False
 
 
@@ -284,6 +287,7 @@ async function loadBundle(){
     }
     const count = Object.keys(pageIndex).length;
     document.getElementById('treeBody').innerHTML = renderTree(pageTree);
+    updateTranslationTreeLabels();
     document.getElementById('treeCount').textContent = '('+count+')';
     document.getElementById('treeSidebar').classList.remove('collapsed');
     showEditor();
@@ -416,7 +420,9 @@ def generate_redirects(redirects_path: Path, output_dir: Path, base_url: str = '
     for slug, target in redirects.items():
         # If target is a hash fragment, resolve relative to base
         if target.startswith('#'):
-            full_target = f'../{target}' if not base_url else f'{base_url}{target}'
+            depth = slug.count('/') + 1  # e.g. "de/guide" -> 2 levels up
+            prefix = '../' * depth
+            full_target = f'{prefix}{target}' if not base_url else f'{base_url}{target}'
         else:
             full_target = target
 
