@@ -76,6 +76,7 @@ function Build-WikiManifest {
     $allFiles = Get-ChildItem -Path $wikiRoot -Recurse -File
     $wikiFiles = $allFiles | Where-Object { $_.Extension -eq '.xwiki' }
     $sortFiles = $allFiles | Where-Object { $_.Name -eq '_sort' }
+    $metaFiles = $allFiles | Where-Object { $_.Name -eq '_meta.json' }
 
     $fileList = @()
     foreach ($f in $wikiFiles) {
@@ -93,7 +94,19 @@ function Build-WikiManifest {
         $sortData[$key] = $lines
     }
 
-    $manifest = @{ root = 'The Best Workplace'; files = $fileList; sorts = $sortData }
+    $metaData = @{}
+    foreach ($mf in $metaFiles) {
+        if ($mf.Directory.FullName -eq $wikiRoot) {
+            $key = ''
+        } else {
+            $key = $mf.Directory.FullName.Substring($wikiRoot.Length + 1).Replace('\', '/')
+        }
+        try {
+            $metaData[$key] = Get-Content $mf.FullName -Encoding UTF8 -Raw | ConvertFrom-Json
+        } catch { }
+    }
+
+    $manifest = @{ root = 'The Best Workplace'; files = $fileList; sorts = $sortData; metas = $metaData }
     $manifestJson = $manifest | ConvertTo-Json -Depth 4 -Compress
     return [System.Text.Encoding]::UTF8.GetBytes($manifestJson)
 }
