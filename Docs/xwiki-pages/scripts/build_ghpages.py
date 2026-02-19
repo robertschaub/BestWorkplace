@@ -246,7 +246,7 @@ def collect_attachments(content_dir: Path, output_dir: Path) -> int:
     return count
 
 
-def generate_viewer_html(template_path: Path) -> str:
+def generate_viewer_html(template_path: Path, analytics_url: str = '') -> str:
     """
     Read the existing xwiki-viewer.html and produce a modified version
     for static GitHub Pages deployment.
@@ -279,8 +279,8 @@ def generate_viewer_html(template_path: Path) -> str:
 
     # 5. Add hash update to loadPage() - after currentPageRef = ref
     html = html.replace(
-        "    currentPageRef = ref;\n    currentFileHandle = page.handle || null;",
-        "    currentPageRef = ref;\n    if(history.replaceState) history.replaceState(null,'','#'+ref);\n    currentFileHandle = page.handle || null;"
+        "    currentPageRef = ref;\n    Analytics.trackPageView(ref);\n    currentFileHandle = page.handle || null;",
+        "    currentPageRef = ref;\n    Analytics.trackPageView(ref);\n    if(history.replaceState) history.replaceState(null,'','#'+ref);\n    currentFileHandle = page.handle || null;"
     )
 
     # 8. Inject loadBundle() function and replace init block
@@ -417,6 +417,15 @@ loadBundle();"""
     });"""
     html = html.replace(old_img_line, new_img_line)
 
+    # 14. Configure analytics endpoint (if provided)
+    if analytics_url:
+        safe_url = analytics_url.rstrip('/').replace("'", "\\'")
+        analytics_init = f"\n// Configure analytics endpoint\nAnalytics.configure('{safe_url}');\n"
+        html = html.replace(
+            '// Auto-load documentation bundle\nloadBundle();',
+            analytics_init + '// Auto-load documentation bundle\nloadBundle();'
+        )
+
     return html
 
 
@@ -480,6 +489,9 @@ def main():
     parser.add_argument('--output', '-o',
         default='gh-pages-build',
         help='Output directory (default: gh-pages-build)')
+    parser.add_argument('--analytics-url',
+        default='',
+        help='Cloudflare Worker URL for page view analytics')
 
     args = parser.parse_args()
 
@@ -545,7 +557,7 @@ def main():
 
     # Generate modified viewer HTML
     print(f'Generating viewer from {viewer_path} ...')
-    viewer_html = generate_viewer_html(viewer_path)
+    viewer_html = generate_viewer_html(viewer_path, analytics_url=args.analytics_url)
     html_path = output_dir / 'index.html'
     html_path.write_text(viewer_html, encoding='utf-8')
     html_size = html_path.stat().st_size

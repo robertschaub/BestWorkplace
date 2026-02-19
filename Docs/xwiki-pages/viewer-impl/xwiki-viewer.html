@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XWiki Viewer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #16161a;
@@ -260,8 +260,7 @@ body.view-preview .preview-pane{width:100%}
 .toast.show{transform:translateY(0);opacity:1}
 .toast svg{width:14px;height:14px;color:#6aaa6a;flex-shrink:0}
 
-/* Hide WebHome entries from tree — folders already load their WebHome on click.
-   Translation variants (WebHome.de, etc.) are also hidden; accessible via language links. */
+/* Hide WebHome entries from tree — folders already load their WebHome on click */
 .tree-item.tree-page[data-ref$=".WebHome"],
 .tree-item.tree-page[data-ref="WebHome"]{display:none}
 
@@ -289,10 +288,36 @@ body.view-preview .preview-pane{width:100%}
   .breadcrumb{font-size:.75em}
   .preview-wrap{padding:14px 16px 32px}
   #editControls .btn:not(#btnToggleTree){display:none}
-  .file-info{display:none}
+  .file-info{display:none !important}
+  #btnStats{display:none !important}
   .tree-item{padding-top:4px;padding-bottom:4px;min-height:36px;display:flex;align-items:center}
   .toolbar .btn{min-width:36px;min-height:36px}
 }
+
+/* ── ANALYTICS MODAL ── */
+.analytics-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);align-items:center;justify-content:center}
+.analytics-overlay.active{display:flex}
+.analytics-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:90vw;max-width:600px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.am-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.am-header h2{font-family:'Crimson Pro',serif;font-size:18px;font-weight:600;color:var(--accent)}
+.am-close{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;border-radius:4px}
+.am-close:hover{color:var(--text);background:var(--surface-2)}
+.am-close svg{width:18px;height:18px;display:block}
+.am-body{flex:1;overflow-y:auto;padding:12px 16px 16px}
+.am-body::-webkit-scrollbar{width:6px}
+.am-body::-webkit-scrollbar-thumb{background:#2a2a32;border-radius:3px}
+.am-summary{display:flex;gap:10px;margin-bottom:12px}
+.am-stat{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;text-align:center}
+.am-stat b{font-family:'Crimson Pro',serif;font-size:24px;color:var(--accent);display:block}
+.am-stat span{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px}
+.am-table{width:100%;border-collapse:collapse;font-size:12px}
+.am-table th{text-align:left;padding:5px 8px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text-dim);border-bottom:1px solid var(--border)}
+.am-table td{padding:5px 8px;border-bottom:1px solid rgba(51,51,59,.3);color:var(--text)}
+.am-table tr:hover td{background:var(--surface-2)}
+.am-table .num{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px}
+.am-table .pg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);cursor:pointer;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.am-table .pg:hover{text-decoration:underline}
+.am-msg{text-align:center;padding:30px 20px;color:var(--text-dim);font-size:13px}
 </style>
 </head>
 <body class="view-preview">
@@ -320,6 +345,10 @@ body.view-preview .preview-pane{width:100%}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
     </button>
     <span class="file-size" id="fileSize"></span>
+    <button class="btn ghost" id="btnStats" onclick="toggleAnalytics()" title="Page view stats" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        Stats
+      </button>
     <span class="watch-badge" id="watchBadge"><span class="pulse"></span>Watching</span>
   </div>
 
@@ -421,6 +450,20 @@ body.view-preview .preview-pane{width:100%}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     <p>Drop to open</p>
     <span>file or folder</span>
+  </div>
+</div>
+<!-- ANALYTICS MODAL -->
+<div class="analytics-overlay" id="analyticsOverlay" onclick="if(event.target===this)toggleAnalytics()">
+  <div class="analytics-modal">
+    <div class="am-header">
+      <h2>Page Views</h2>
+      <button class="am-close" onclick="toggleAnalytics()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="am-body" id="analyticsBody">
+      <div class="am-msg">Loading...</div>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg"></span></div>
@@ -724,31 +767,21 @@ class XWikiParser {
     // External links
     text=text.replace(/\[\[([^\]]+?)&gt;&gt;(https?:\/\/[^\]]+?)\]\]/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
     text=text.replace(/\[\[(https?:\/\/[^\]]+?)\]\]/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+    // Mailto links
+    text=text.replace(/\[\[([^\]]+?)&gt;&gt;(mailto:[^\]]+?)\]\]/g,'<a href="$2">$1</a>');
     // Wiki links: [[label>>ref]] or [[ref]]
     text=text.replace(/\[\[([^\]]+?)&gt;&gt;(?!https?:\/\/)([^\]]+?)\]\]/g,(m,label,ref)=>{
       ref=ref.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
       this.wikiLinks.push(ref);
       return `<a class="wiki-link" data-wiki-ref="${this.esc(ref)}" href="javascript:void(0)" onclick="navigateToRef('${this.escAttr(ref)}')">${label}</a>`;
     });
-    text=text.replace(/\[\[(?!https?:\/\/|image:)([^\]]+?)\]\]/g,(m,ref)=>{
+    text=text.replace(/\[\[(?!https?:\/\/)([^\]]+?)\]\]/g,(m,ref)=>{
       const clean=ref.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
       this.wikiLinks.push(clean);
       return `<a class="wiki-link" data-wiki-ref="${this.esc(clean)}" href="javascript:void(0)" onclick="navigateToRef('${this.escAttr(clean)}')">${ref}</a>`;
     });
-    text=text.replace(/\[\[image:([^\]|]+?)(?:\|\|([^\]]*))?]]/g,function(m,src,params){
-      var s=src.trim();
-      if(!/^https?:\/\//.test(s)) s='attachments/'+encodeURIComponent(s);
-      var a='';
-      if(params){
-        var wm=params.match(/width="(\d+)"/);
-        var hm=params.match(/height="(\d+)"/);
-        var am=params.match(/alt="([^"]+)"/);
-        if(wm)a+=' width="'+wm[1]+'"';
-        if(hm)a+=' height="'+hm[1]+'"';
-        if(am)a+=' alt="'+am[1]+'"';
-      }
-      return '<img src="'+s+'"'+(a||' alt="image"')+'>';
-    });
+    text=text.replace(/\[\[image:([^\]|]+?)(?:\|[^\]]*)?\]\]/g,'<img src="$1" alt="image">');
+    text=text.replace(/image:(https?:\/\/\S+)/g,'<img src="$1" alt="image">');
     text=text.replace(/\\\\/g,'<br>');
     return text;
   }
@@ -982,9 +1015,7 @@ function getChildPages(ref){
 
 function derivePageTitle(ref){
   if(!ref) return '';
-  // Treat WebHome.LANG (e.g. WebHome.de) as WebHome for title derivation
-  var cleaned = ref.replace(/\.WebHome\.[a-z]{2}$/i, '.WebHome').replace(/^WebHome\.[a-z]{2}$/i, 'WebHome');
-  const segs = cleaned.split('.').filter(s=>s.toLowerCase()!=='webhome');
+  const segs = ref.split('.').filter(s=>s.toLowerCase()!=='webhome');
   if(segs.length) return segs[segs.length-1];
   // Root WebHome — use wiki/folder name
   if(pageTree && pageTree[0] && pageTree[0].type==='folder') return pageTree[0].name;
@@ -998,13 +1029,12 @@ function contentHasHeading(src){
   }
   return false;
 }
+
 async function renderPreview(){
   let src = editorEl.value;
-  // Auto-inject title for pages that lack a heading at the first line
+  // Auto-inject title for pages that lack a heading
   if(!contentHasHeading(src)){
-    // Use displayTitle from _meta.json if available, else derive from ref
-    const page = pageIndex[currentPageRef];
-    const title = (page && page.displayTitle) || derivePageTitle(currentPageRef);
+    const title = derivePageTitle(currentPageRef);
     if(title) src = `= ${title} =\n\n${src}`;
   }
   let html = parser.parse(src);
@@ -1217,6 +1247,7 @@ async function loadPage(ref, addHistory=true){
     lastContent = text;
     lastMod = fileMod;
     currentPageRef = ref;
+    Analytics.trackPageView(ref);
     currentFileHandle = page.handle || null;
     currentSpace = page.segments.slice(0,-1);
 
@@ -1268,10 +1299,8 @@ function updateBreadcrumb(page){
     if(i>0) html += '<span class="bc-sep">›</span>';
     const isLast = i === segs.length-1;
     const partial = segs.slice(0,i+1).join('.');
-    // Use displayTitle for the last segment when available (e.g. translation pages)
-    const label = (isLast && page.displayTitle) ? page.displayTitle : segs[i];
     if(isLast){
-      html += `<span class="bc-item active">${esc(label)}</span>`;
+      html += `<span class="bc-item active">${esc(segs[i])}</span>`;
     } else {
       // Try to navigate to this space's index page
       html += `<span class="bc-item" onclick="tryNavigateSpace('${escAttr(partial)}')">${esc(segs[i])}</span>`;
@@ -1294,21 +1323,9 @@ function tryNavigateSpace(dotPath){
 // =================================================================
 // Directory Scanning & Page Index
 // =================================================================
-// Apply translation titles from _meta.json to page entries in the same folder.
-// meta format: { "translations": { "de": { "title": "..." }, ... } }
-function applyTranslationMeta(entries, meta){
-  if(!meta || !meta.translations) return;
-  for(const[lang, info] of Object.entries(meta.translations)){
-    const target = 'WebHome.'+lang;
-    const entry = entries.find(e => e.type==='file' && e.baseName===target);
-    if(entry && info.title) entry.displayTitle = info.title;
-  }
-}
-
 async function scanDirectory(dirH, prefix=[]){
   const entries = [];
   let sortOrder = null;
-  let meta = null; // _meta.json translation metadata
   for await(const entry of dirH.values()){
     if(entry.name.startsWith('.')) continue; // skip hidden
     if(entry.name === '_sort' && entry.kind === 'file'){
@@ -1317,10 +1334,6 @@ async function scanDirectory(dirH, prefix=[]){
         const text = await f.text();
         sortOrder = text.split('\n').map(l=>l.trim()).filter(l=>l && !l.startsWith('#'));
       } catch(e){ /* ignore */ }
-      continue;
-    }
-    if(entry.name === '_meta.json' && entry.kind === 'file'){
-      try { const f = await entry.getFile(); meta = JSON.parse(await f.text()); } catch(e){ /* ignore */ }
       continue;
     }
     if(entry.kind === 'file'){
@@ -1353,8 +1366,6 @@ async function scanDirectory(dirH, prefix=[]){
       }
     }
   }
-  // Apply translation titles from _meta.json
-  applyTranslationMeta(entries, meta);
   applySortOrder(entries, sortOrder);
   return entries;
 }
@@ -1399,15 +1410,9 @@ function buildPageIndex(tree, idx={}){
 // =================================================================
 // File Tree Sidebar
 // =================================================================
-function isTranslationWebHome(baseName){
-  return /^WebHome\.[a-z]{2}$/i.test(baseName);
-}
-
 function renderTree(tree, depth=0){
   let html = '';
   for(const item of tree){
-    // Hide translation WebHome pages (e.g. WebHome.de) — accessible via language links
-    if(item.type === 'file' && isTranslationWebHome(item.baseName)) continue;
     const pad = depth * 14;
     if(item.type === 'folder'){
       const id = 'tg-'+item.segments.join('-');
@@ -1423,7 +1428,7 @@ function renderTree(tree, depth=0){
     } else {
       html += `<div class="tree-item tree-page" data-ref="${esc(item.ref)}" style="padding-left:${8+pad+16}px" onclick="loadPage('${escAttr(item.ref)}')">
         <svg class="ti-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
-        <span class="ti-label">${esc(item.displayTitle || item.baseName)}</span>
+        <span class="ti-label">${esc(item.baseName)}</span>
       </div>`;
     }
   }
@@ -1586,7 +1591,6 @@ async function openFolderPicker(){
       pageIndex = buildPageIndex(tree);
       const count = Object.keys(pageIndex).length;
       document.getElementById('treeBody').innerHTML = renderTree(tree);
-
       document.getElementById('treeCount').textContent = `(${count})`;
       document.getElementById('treeSidebar').classList.remove('collapsed');
       addRecent(dirHandle.name,'folder');
@@ -1611,12 +1615,11 @@ document.getElementById('folderInput').addEventListener('change', async e => {
     const ext = '.'+f.name.split('.').pop().toLowerCase();
     return WIKI_EXTS.includes(ext);
   });
-  const metaFiles = files.filter(f => f.name === '_meta.json');
   if(!wikiFiles.length){ showToast('No wiki files found in folder'); e.target.value=''; return; }
 
   // Store all File objects keyed by relative path for reading later
   fallbackFiles = {};
-  const tree = await buildTreeFromFileList(wikiFiles, rootName, metaFiles);
+  const tree = buildTreeFromFileList(wikiFiles, rootName);
   pageTree = tree;
   pageIndex = buildPageIndex(tree);
   dirHandle = null; // no FS API handle in fallback mode
@@ -1635,7 +1638,7 @@ document.getElementById('folderInput').addEventListener('change', async e => {
 });
 
 // Build hierarchical tree from flat file list (webkitdirectory)
-async function buildTreeFromFileList(files, rootName, metaFiles){
+function buildTreeFromFileList(files, rootName){
   // Group files by their path segments (skip root folder name)
   const root = [];
   const folderMap = {}; // path → children array
@@ -1678,23 +1681,6 @@ async function buildTreeFromFileList(files, rootName, metaFiles){
       currentChildren = folderMap[folderPath];
     }
     currentChildren.push(entry);
-  }
-
-  // Read _meta.json files and apply translation titles per folder
-  if(metaFiles && metaFiles.length){
-    for(const mf of metaFiles){
-      try {
-        const mParts = mf.webkitRelativePath.split('/');
-        mParts.shift(); // remove root
-        mParts.pop();   // remove _meta.json
-        const folderPath = mParts.join('/');
-        const children = folderPath ? folderMap[folderPath] : root;
-        if(children){
-          const meta = JSON.parse(await mf.text());
-          applyTranslationMeta(children, meta);
-        }
-      } catch(e){ /* ignore */ }
-    }
   }
 
   // Sort recursively
@@ -1873,7 +1859,6 @@ async function handleDrop(dt){
           pageTree = tree; pageIndex = buildPageIndex(tree);
           const count = Object.keys(pageIndex).length;
           document.getElementById('treeBody').innerHTML = renderTree(tree);
-    
           document.getElementById('treeCount').textContent = `(${count})`;
           document.getElementById('treeSidebar').classList.remove('collapsed');
           addRecent(dirHandle.name,'folder');
@@ -1904,7 +1889,6 @@ async function handleDrop(dt){
             pageTree = tree; pageIndex = buildPageIndex(tree); dirHandle = null;
             const count = Object.keys(pageIndex).length;
             document.getElementById('treeBody').innerHTML = renderTree(tree);
-      
             document.getElementById('treeCount').textContent = `(${count})`;
             document.getElementById('treeSidebar').classList.remove('collapsed');
             addRecent(rootName,'folder');
@@ -2092,7 +2076,6 @@ function buildTreeFromManifest(manifest){
   const root = [];
   const folderMap = {};
   const sorts = manifest.sorts || {};
-  const metas = manifest.metas || {};
   const wikiName = manifest.root || 'Wiki';
   for(const relPath of manifest.files){
     const parts = relPath.split('/');
@@ -2118,11 +2101,6 @@ function buildTreeFromManifest(manifest){
     }
     currentChildren.push(entry);
   }
-  // Apply _meta.json translation titles from bundle
-  for(const[folderPath, meta] of Object.entries(metas)){
-    const children = folderPath ? folderMap[folderPath] : root;
-    if(children) applyTranslationMeta(children, meta);
-  }
   applySortToTree(root, '', sorts);
   // Wrap in root folder so project name appears in sidebar (matches gh-pages structure)
   return [{type:'folder', name:wikiName, segments:[wikiName], children:root}];
@@ -2144,6 +2122,82 @@ function applySortToTree(items, path, sorts){
       applySortToTree(item.children, childPath, sorts);
     }
   }
+}
+
+// =================================================================
+// Analytics — Privacy-preserving page view tracking
+// =================================================================
+const Analytics = (function(){
+  let EP = '';
+
+  function vid(){
+    let id = localStorage.getItem('fh_vid');
+    if(!id){
+      id = crypto.randomUUID ? crypto.randomUUID()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+            const r=Math.random()*16|0; return(c==='x'?r:(r&0x3|0x8)).toString(16);
+          });
+      localStorage.setItem('fh_vid', id);
+    }
+    return id;
+  }
+
+  function track(pageRef){
+    if(!EP) return;
+    fetch(EP+'/track',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({p:pageRef,id:vid()})}).catch(()=>{});
+  }
+
+  async function stats(){
+    if(!EP) return null;
+    try{ const r=await fetch(EP+'/stats'); return r.ok?await r.json():null; }
+    catch{ return null; }
+  }
+
+  function configure(url){
+    EP=(url||'').replace(/\/+$/,'');
+    const btn=document.getElementById('btnStats');
+    if(btn) btn.style.display=EP?'':'none';
+  }
+
+  return { trackPageView:track, stats, configure, isEnabled:()=>!!EP };
+})();
+
+function toggleAnalytics(){
+  const o=document.getElementById('analyticsOverlay');
+  if(o.classList.toggle('active')) loadAnalytics();
+}
+
+async function loadAnalytics(){
+  const body=document.getElementById('analyticsBody');
+  body.innerHTML='<div class="am-msg">Loading...</div>';
+  const data=await Analytics.stats();
+  if(!data){body.innerHTML='<div class="am-msg">No data yet.</div>';return;}
+
+  const totalViews=data.reduce((s,d)=>s+d.v,0);
+  // Collect unique visitor count from all pages (server already provides per-page unique count)
+  const totalUnique=new Set(); // approximate from page data
+  let html='<div class="am-summary">';
+  html+='<div class="am-stat"><b>'+totalViews+'</b><span>Total Views</span></div>';
+  html+='<div class="am-stat"><b>'+data.length+'</b><span>Pages Viewed</span></div>';
+  html+='</div>';
+
+  if(data.length===0){
+    html+='<div class="am-msg">No page views recorded yet.</div>';
+  } else {
+    html+='<table class="am-table"><thead><tr>';
+    html+='<th>#</th><th>Page</th><th style="text-align:right">Views</th><th style="text-align:right">Visitors</th>';
+    html+='</tr></thead><tbody>';
+    data.forEach((d,i)=>{
+      const click=pageIndex[d.p]?' onclick="toggleAnalytics();loadPage(\''+d.p.replace(/'/g,"\\'")+'\')"':'';
+      html+='<tr><td class="num">'+(i+1)+'</td>';
+      html+='<td class="pg"'+click+' title="'+d.p+'">'+d.p+'</td>';
+      html+='<td class="num">'+d.v+'</td>';
+      html+='<td class="num">'+d.u+'</td></tr>';
+    });
+    html+='</tbody></table>';
+  }
+  body.innerHTML=html;
 }
 
 // =================================================================
