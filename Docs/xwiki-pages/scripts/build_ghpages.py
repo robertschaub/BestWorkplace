@@ -247,7 +247,7 @@ def collect_attachments(content_dir: Path, output_dir: Path) -> int:
     return count
 
 
-def generate_viewer_html(template_path: Path, analytics_url: str = '') -> str:
+def generate_viewer_html(template_path: Path, analytics_url: str = '', site_id: str = '') -> str:
     """
     Read the existing xwiki-viewer.html and produce a modified version
     for static GitHub Pages deployment.
@@ -421,7 +421,9 @@ loadBundle();"""
     # 14. Configure analytics endpoint (if provided)
     if analytics_url:
         safe_url = analytics_url.rstrip('/').replace("'", "\\'")
-        analytics_init = f"\n// Configure analytics endpoint\nAnalytics.configure('{safe_url}');\n"
+        safe_site = site_id.replace("'", "\\'")
+        site_arg = f", '{safe_site}'" if safe_site else ''
+        analytics_init = f"\n// Configure analytics endpoint\nAnalytics.configure('{safe_url}'{site_arg});\n"
         html = html.replace(
             '// Auto-load documentation bundle\nloadBundle();',
             analytics_init + '// Auto-load documentation bundle\nloadBundle();'
@@ -493,6 +495,9 @@ def main():
     parser.add_argument('--analytics-url',
         default='',
         help='Cloudflare Worker URL for page view analytics')
+    parser.add_argument('--site-id',
+        default='',
+        help='Site identifier prefix for analytics KV keys (e.g. FH, BW) — prevents mixing data from multiple sites sharing the same worker')
 
     args = parser.parse_args()
 
@@ -558,7 +563,7 @@ def main():
 
     # Generate modified viewer HTML
     print(f'Generating viewer from {viewer_path} ...')
-    viewer_html = generate_viewer_html(viewer_path, analytics_url=args.analytics_url)
+    viewer_html = generate_viewer_html(viewer_path, analytics_url=args.analytics_url, site_id=args.site_id)
     html_path = output_dir / 'index.html'
     html_path.write_text(viewer_html, encoding='utf-8')
     html_size = html_path.stat().st_size
