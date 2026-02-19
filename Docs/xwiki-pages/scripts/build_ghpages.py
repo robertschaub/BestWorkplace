@@ -12,7 +12,7 @@ Scans the .xwiki page tree under Docs/xwiki-pages/The Best Workplace/, generates
 Usage (from repo root):
     python Docs/xwiki-pages/scripts/build_ghpages.py
     python Docs/xwiki-pages/scripts/build_ghpages.py -o my-output-dir
-    python Docs/xwiki-pages/scripts/build_ghpages.py --analytics-url https://example.workers.dev
+    python Docs/xwiki-pages/scripts/build_ghpages.py --analytics-url https://factharbor-docs-analytics.factharbor.workers.dev
 """
 
 from __future__ import annotations
