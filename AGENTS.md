@@ -28,11 +28,14 @@ Preserve existing syntax when editing. Full rules: `Docs/AGENTS/GlobalMasterKnow
 | Action | Command |
 |--------|---------|
 | Preview locally | `Docs\xwiki-pages\View.cmd` |
-| Build gh-pages | `python Docs/xwiki-pages/scripts/build_ghpages.py` |
-| Deploy gh-pages | `powershell Docs/xwiki-pages/scripts/deploy-ghpages.ps1` |
+| Build gh-pages (local only) | `python Docs/xwiki-pages/scripts/build_ghpages.py` |
+| Publish to gh-pages | `git push` to `main` — CI deploys automatically |
+| Re-trigger CI manually | `gh workflow run "Deploy Docs to GitHub Pages" --ref main` |
 | XAR to xWiki tree | `python Docs/xwiki-pages/scripts/xar_to_xwiki_tree.py <file.xar> --output Docs/xwiki-pages` |
 | xWiki tree to XAR | `python Docs/xwiki-pages/scripts/xwiki_tree_to_xar.py Docs/xwiki-pages --output BestWorkplace.xar` |
 | Download attachments | `python Docs/xwiki-pages/scripts/download_attachments.py` |
+
+> **⚠ AGENTS: Never push to the `gh-pages` branch directly.** CI owns gh-pages and injects the analytics secret at build time. Manual pushes (including via `deploy-ghpages.ps1`) will overwrite the CI build and break analytics. `deploy-ghpages.ps1` is local-preview only.
 
 ---
 
