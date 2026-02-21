@@ -24,6 +24,7 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -306,6 +307,10 @@ async function loadBundle(){
     if(bundle.tree[0] && pageIndex['WebHome'] && !pageIndex[bundle.tree[0].name+'.WebHome']){
       pageIndex[bundle.tree[0].name+'.WebHome'] = pageIndex['WebHome'];
     }
+    // Apply short-name aliases (e.g. #guide → How to Use This Blueprint.WebHome)
+    for(const[alias,ref] of Object.entries(bundle.aliases||{})){
+      if(!pageIndex[alias] && pageIndex[ref]) pageIndex[alias]=pageIndex[ref];
+    }
     const count = Object.keys(pageIndex).length;
     document.getElementById('treeBody').innerHTML = renderTree(pageTree);
     document.getElementById('treeCount').textContent = '('+count+')';
@@ -479,6 +484,34 @@ def generate_redirects(redirects_path: Path, output_dir: Path, base_url: str = '
     return count
 
 
+def load_aliases(redirects_path: Path) -> Dict[str, str]:
+    """Extract page aliases from _redirects.json for bundle injection.
+
+    Supports both formats:
+    - Object (standard): { "slug": "#pageRef" }  → alias slug → decoded pageRef
+    - Array  (legacy):   [{ "alias": "...", "ref": "..." }]
+    """
+    if not redirects_path.is_file():
+        return {}
+    try:
+        data = json.loads(redirects_path.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f'  Warning: could not read {redirects_path}: {e}', file=sys.stderr)
+        return {}
+    aliases: Dict[str, str] = {}
+    if isinstance(data, dict):
+        for slug, target in data.items():
+            ref = urllib.parse.unquote(target.lstrip('#')) if target.startswith('#') else target
+            aliases[slug] = ref
+    elif isinstance(data, list):
+        for entry in data:
+            alias = entry.get('alias', '').strip()
+            ref = entry.get('ref', '').strip()
+            if alias and ref:
+                aliases[alias] = ref
+    return aliases
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Generate GitHub Pages deployment for xWiki docs'
@@ -540,6 +573,12 @@ def main():
     # Get commit hash
     commit_hash = _git_short_hash()
 
+    # Load page aliases from _redirects.json
+    redirects_path = repo_root / 'Docs' / 'xwiki-pages' / '_redirects.json'
+    aliases = load_aliases(redirects_path)
+    if aliases:
+        print(f'  Aliases: {", ".join(f"{k} -> {v}" for k,v in aliases.items())}')
+
     # Generate pages.json
     bundle = {
         'generated': _now_iso(),
@@ -548,6 +587,7 @@ def main():
         'commitHash': commit_hash,
         'rootRef': root_ref,
         'pageCount': len(pages),
+        'aliases': aliases,
         'tree': tree,
         'pages': pages,
         'metas': metas
