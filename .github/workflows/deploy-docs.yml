@@ -8,6 +8,7 @@ on:
       - 'Docs/xwiki-pages/viewer-impl/**'
       - 'Docs/xwiki-pages/scripts/build_ghpages.py'
       - 'Docs/xwiki-pages/_redirects.json'
+  workflow_dispatch:
 
 permissions:
   contents: write

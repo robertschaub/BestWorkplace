@@ -1,15 +1,20 @@
 # deploy-ghpages.ps1
-# Builds and deploys xWiki documentation to the gh-pages branch for GitHub Pages.
+# Builds xWiki documentation for local preview of the GitHub Pages output.
+#
+# NOTE: Actual deployment to gh-pages is handled by CI (.github/workflows/deploy-docs.yml).
+#       CI injects the DOCS_ANALYTICS_URL secret so the stats button works.
+#       Do NOT push to gh-pages manually — it will overwrite the CI build and break analytics.
 #
 # Usage (from repo root):
 #   powershell Docs/xwiki-pages/scripts/deploy-ghpages.ps1
 #
 # What it does:
-#   1. Runs build_ghpages.py to generate index.html + pages.json
-#   2. Switches to gh-pages branch (creates orphan if first time)
-#   3. Copies generated files to branch root
-#   4. Commits and pushes
-#   5. Switches back to original branch
+#   1. Runs build_ghpages.py to generate index.html + pages.json in gh-pages-build/
+#   2. Switches to gh-pages branch
+#   3. Copies generated files (local preview only, does NOT push)
+#   4. Switches back to original branch
+#
+# To publish: push to main — CI deploys automatically.
 
 $ErrorActionPreference = 'Stop'
 
@@ -107,13 +112,10 @@ try {
     if ($hasStaged) {
         git commit -m $msg
         Write-Host "`nCommitted: $msg" -ForegroundColor Green
-
-        # Step 6: Push
-        Write-Host "Pushing to origin/gh-pages..." -ForegroundColor Yellow
-        git push origin gh-pages
-        Write-Host "Pushed successfully!" -ForegroundColor Green
+        Write-Host "NOTE: Not pushing — CI handles gh-pages deployment with analytics." -ForegroundColor Yellow
+        Write-Host "      Push to main and CI will deploy automatically." -ForegroundColor Yellow
     } else {
-        Write-Host "`nNo changes to deploy." -ForegroundColor Yellow
+        Write-Host "`nNo changes to commit." -ForegroundColor Yellow
     }
 } finally {
     # Step 7: Switch back to original branch
@@ -134,5 +136,5 @@ if (Test-Path $buildDir) {
 }
 
 Write-Host "`n--- Done! ---" -ForegroundColor Green
-Write-Host "GitHub Pages will update at: https://robertschaub.github.io/BestWorkplace/" -ForegroundColor Cyan
-Write-Host "Configure in: GitHub repo Settings > Pages > Branch: gh-pages, folder: / (root)" -ForegroundColor Gray
+Write-Host "Local build complete. To publish, push to main — CI deploys with analytics." -ForegroundColor Cyan
+Write-Host "Live site: https://robertschaub.github.io/BestWorkplace/" -ForegroundColor Gray
