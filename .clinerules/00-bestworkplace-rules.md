@@ -22,13 +22,14 @@ Documentation-only project — no source code. xWiki 2.1 pages about agile leade
 
 - Prefer reading .xwiki files before editing — do not guess at page structure or content.
 - Preserve existing xWiki 2.1 syntax when editing pages.
+- Before substantial Markdown/xWiki edits, use `/doc-guard` (`.claude/skills/doc-guard/SKILL.md`, mirrored at `.agents/skills/doc-guard/SKILL.md`) and write the `DOC-GUARD` reader/need/lean-test block.
 - Full xWiki rules: `Docs/AGENTS/GlobalMasterKnowledge_for_xWiki.md`.
 
 ## Commands
 
 - Preview: `Docs\xwiki-pages\View.cmd`
 - Build: `python Docs/xwiki-pages/scripts/build_ghpages.py`
-- Deploy: `powershell Docs/xwiki-pages/scripts/deploy-ghpages.ps1`
+- Publish: push to `main`; CI owns `gh-pages`. `deploy-ghpages.ps1` is local-preview only.
 
 ## Roles
 

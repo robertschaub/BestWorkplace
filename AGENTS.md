@@ -23,6 +23,14 @@ Preserve existing syntax when editing. Full rules: `Docs/AGENTS/GlobalMasterKnow
 
 ---
 
+## Documentation Discipline
+
+Use the **`/doc-guard` skill** (`.claude/skills/doc-guard/SKILL.md`, mirrored at `.agents/skills/doc-guard/SKILL.md`) before adding a new document, substantially expanding or rewriting Markdown/xWiki content, adding explanatory/background sections, adding FAQs/glossaries/templates, introducing repeated framing, or reviewing a documentation diff for clutter.
+
+For substantial documentation edits, write the `DOC-GUARD` block before editing: reader, need, existing home, chosen option (`tighten | amend | merge | move | delete | add`), rejected path, lean test, readability check, and whether follow-up index/status/link reconciliation is needed. Prefer tightening, amending, merging, moving, or deleting before adding. Cut filler, duplicated background, placeholder sections, and broad claims that are not concrete or sourceable.
+
+---
+
 ## Commands
 
 | Action | Command |

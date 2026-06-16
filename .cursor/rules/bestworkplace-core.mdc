@@ -25,6 +25,10 @@ Documentation-only project — no source code. xWiki 2.1 pages about agile leade
 - Platform: Windows. Use PowerShell-compatible commands.
 - Solo developer + AI agents. Direct push to main is normal.
 
+## Documentation Discipline
+
+Before substantial Markdown/xWiki edits, use `/doc-guard` (`.claude/skills/doc-guard/SKILL.md`, mirrored at `.agents/skills/doc-guard/SKILL.md`): state the reader need, existing home, chosen option, and lean test; prefer tightening or merging over adding.
+
 ## Roles
 
 When the user starts with "As \<Role\>" (e.g., "As Tech Writer, update…"), follow the **Role Activation Protocol** in `/AGENTS.md`. It tells you which role definition to load from `Docs/AGENTS/Multi_Agent_Collaboration_Rules.md` §2 and which documents to read.

@@ -33,6 +33,7 @@ Documentation-only project — no source code. xWiki 2.1 pages about agile leade
 - No secrets in commits.
 - No destructive git commands unless explicitly asked.
 - Do not modify build output (`gh-pages-build/`) unless asked.
+- Use `/doc-guard` (`.claude/skills/doc-guard/SKILL.md`) before substantial Markdown/xWiki edits; keep documentation lean and reconcile affected links or indexes.
 
 ## Roles & Multi-Agent Workflow
 

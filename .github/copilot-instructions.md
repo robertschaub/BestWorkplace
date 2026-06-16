@@ -14,12 +14,14 @@ Purpose: short, actionable notes to help an AI agent be immediately productive i
 - **Commands**:
   - Preview: `Docs\xwiki-pages\View.cmd`
   - Build: `python Docs/xwiki-pages/scripts/build_ghpages.py`
-  - Deploy: `powershell Docs/xwiki-pages/scripts/deploy-ghpages.ps1`
+  - Publish: push to `main`; CI owns `gh-pages`. `deploy-ghpages.ps1` is local-preview only.
 
 - **Safety**:
   - Do not change secrets/credentials or commit them.
   - Avoid destructive git commands unless explicitly asked.
   - Do not modify build output (`gh-pages-build/`) unless asked.
+
+- **Documentation discipline**: before substantial Markdown/xWiki edits, use `/doc-guard` (`.claude/skills/doc-guard/SKILL.md`, mirrored at `.agents/skills/doc-guard/SKILL.md`); state the reader need, existing home, chosen option, and lean test.
 
 - **Roles**: When the user starts with "As \<Role\>" (e.g., "As Tech Writer, update…"), follow the **Role Activation Protocol** in `/AGENTS.md`. It tells you which role to load from `Docs/AGENTS/Multi_Agent_Collaboration_Rules.md` §2 and which documents to read.
 

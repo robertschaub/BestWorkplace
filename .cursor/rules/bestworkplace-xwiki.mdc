@@ -18,3 +18,4 @@ Read `Docs/AGENTS/GlobalMasterKnowledge_for_xWiki.md` for full xWiki syntax rule
 ## Rules
 - Preserve existing syntax when editing.
 - Each document lives in ONE authoritative format (`.md` or `.xwiki`, not both).
+- For substantial documentation edits, use `/doc-guard` before editing and reconcile affected links or indexes when needed.
