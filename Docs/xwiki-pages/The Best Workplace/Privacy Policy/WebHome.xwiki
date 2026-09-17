@@ -1,0 +1,97 @@
+= Privacy Policy =
+**Last updated:** 17 September 2026
+**Draft version:** 0.3
+
+{{warning}}
+**DRAFT FOR REVIEW — not yet effective.** Before adoption, confirm the privacy contact, decide whether to disable or obtain valid opt-in for the current audience measurement, define deletion periods, and document provider roles and transfer safeguards. This draft was checked against the repository and live site; it is not legal advice or retained-counsel sign-off.
+{{/warning}}
+
+== At a glance ==
+
+The Best Workplace is a public, static documentation site. It has no accounts, forms, payments, advertising, or user-submitted workplace data.
+
+When a page opens, GitHub serves the site; Google Fonts and cdnjs/Cloudflare serve fonts and Mermaid code; embedded remote images may contact their source. The site also currently creates a random, persistent browser identifier and sends it with the page reference to a Cloudflare Worker for page-view statistics. Cloudflare receives the visitor's IP address and ordinary request metadata at the network layer. The per-page records form a reading profile within BestWorkplace and may remain linkable to historical FactHarbor page records created before FactHarbor disabled its audience analytics. This measurement has no consent control or automatic deletion period today and must be resolved before this notice is made effective.
+
+== 1. Controller and contact ==
+
+The site's content is maintained and privately operated by **Robert Schaub**:
+
+* **Controller:** Robert Schaub (private project operator)
+* **Postal address:** In Lederäcker 11, 8305 Dietlikon, Switzerland
+* **Privacy contact:** [REVIEW REQUIRED: designate an email address for this private project]
+
+GitHub, Google, Cloudflare/cdnjs, and remote media hosts determine some processing independently for their services.
+
+== 2. Scope ==
+
+This notice covers the public BestWorkplace GitHub Pages site, the public GitHub repository, its documentation analytics Worker, and direct project communications. It does not cover external sites reached by selecting a link.
+
+== 3. Data, purposes, and recipients ==
+
+|= Activity |= Data and recipient |= Purpose |
+| Visit a page | GitHub receives IP address and ordinary HTTP metadata; GitHub states that Pages visitor IP addresses are logged for security | Deliver and secure the static site |
+| Render fonts and diagrams | Google Fonts and cdnjs/Cloudflare receive ordinary request metadata such as IP address and user agent | Render typography and Mermaid diagrams |
+| Load embedded remote media | The image or media host receives an ordinary request when embedded content loads | Display referenced material |
+| Audience measurement | A random UUID stored as `fh_vid` in browser `localStorage`, plus the internal page reference, is sent to a Cloudflare Worker. Cloudflare receives the IP address and ordinary request metadata; Workers KV stores total and per-identifier counts for each page. | Count page views and approximate unique visitors |
+| Contribute on GitHub | GitHub identity, contribution, timestamp, commit/review metadata | Public review, attribution, correction, and project history |
+| Contact the maintainer | Email address, message, attachments, correspondence metadata | Reply and handle the request |
+
+The analytics payload does not intentionally include your name, email address, page text, or a browser fingerprint. The UUID is nevertheless a persistent online identifier and may be personal data. The Worker's unauthenticated `/stats` endpoint currently publishes aggregate statistics by page (without UUIDs). Its unauthenticated `/track` endpoint accepts writes from any origin, so those public counts are not integrity-protected.
+
+== 4. Browser storage and the cross-project identifier ==
+
+The site does not currently set a project analytics cookie. It uses `localStorage`, which can be subject to the same consent requirements as cookies when storage is not strictly necessary.
+
+BestWorkplace is served under the shared `https://robertschaub.github.io` origin and uses the key `fh_vid`. FactHarbor previously used the same key and Worker/KV namespace but has disabled audience analytics in its deployment. Historical FactHarbor and current BestWorkplace page records may therefore remain linkable through the identifier until the historical records are deleted or minimized. The shared origin also serves the Our AI Charter site, which does not currently set or transmit `fh_vid`.
+
+Clearing site data for `robertschaub.github.io` removes the browser copy. It does not remove historical identifiers already stored in Workers KV. There is currently no user-facing opt-out, withdrawal, or deletion control.
+
+**[REVIEW REQUIRED: disable analytics pending consent, or implement prior opt-in, refusal/withdrawal, project-specific identifiers, a short KV TTL, deletion handling, purpose limitation, and access controls.]**
+
+== 5. Legal grounds and international transfers ==
+
+Processing follows the Swiss Federal Act on Data Protection principles of lawfulness, good faith, transparency, purpose limitation, proportionality, accuracy, and security. Where the GDPR applies, site delivery, security, project maintenance, and correspondence may rely on legitimate interests (Article 6(1)(f)), requested project steps (Article 6(1)(b)), or legal obligations (Article 6(1)(c)).
+
+The current non-essential audience measurement must not be justified by treating ordinary site use as blanket consent. If consent is the selected basis, it must be informed, prior, freely given, specific, and as easy to withdraw as to give.
+
+GitHub, Google, and Cloudflare may process data outside Switzerland. Before adoption, the controller must record each provider's role, current terms/data-processing agreement, processing location, and any required Swiss or EU adequacy or contractual safeguard.
+
+Provider notices:
+
+* [[GitHub General Privacy Statement>>url:https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement]]
+* [[Google Privacy Policy>>url:https://policies.google.com/privacy]]
+* [[Cloudflare Privacy Policy>>url:https://www.cloudflare.com/privacypolicy/]]
+
+== 6. Retention ==
+
+|= Data |= Current/proposed period |
+| Analytics UUID and page-level reading profile in Workers KV | **No automatic expiry in the current Worker. [REVIEW REQUIRED: set and enforce a short TTL and migration/deletion plan.]** |
+| UUID in browser `localStorage` | Until site data is cleared or the implementation deletes it |
+| GitHub Pages, Google Fonts, cdnjs/Cloudflare, and remote-media logs | Set by the respective provider; not directly deletable by this site's controller |
+| Public GitHub contributions and history | Retained as a durable public record and may remain in forks, clones, releases, or archives |
+| Direct correspondence | Proposed maximum of two years after closure unless law, a dispute, or a documented security need requires longer. **[REVIEW REQUIRED: approve and implement.]** |
+
+We do not sell personal data or use page-view data for advertising or to profile individuals for marketing. The current storage design nevertheless creates the technical page-level reading profile described in §4.
+
+== 7. Rights and security ==
+
+Depending on applicable law and circumstances, you may request access, correction, deletion, restriction, objection, or data release/portability. Until a dedicated privacy email is designated, send a postal request to the controller address in §1. We may verify identity or authority before disclosing or changing data.
+
+Public Git history cannot always be fully erased from distributed copies. We will nevertheless assess reasonable correction, redaction, deletion, or platform measures. You may complain to the [[Swiss Federal Data Protection and Information Commissioner (FDPIC)>>url:https://www.edoeb.admin.ch/en]] or, where the GDPR applies, the competent EU/EEA supervisory authority.
+
+The site uses HTTPS through GitHub Pages and public source code, but no internet service can guarantee absolute security. Do not place secrets, private correspondence, or unnecessary personal data in public issues or contributions.
+
+== 8. Children and changes ==
+
+The site is general workplace-learning material and is not designed to collect children's data. Do not submit personal data about a child in a public contribution.
+
+Material changes will be versioned in the repository. A dated version becomes effective only after the controller and outstanding review gates are resolved.
+
+== 9. Review gates before adoption ==
+
+1. Designate a privacy email address for this private project.
+2. Disable the current analytics pending consent, or implement opt-in, withdrawal, project separation, TTL/deletion, purpose limitation, protected administration, and write-integrity controls; decide whether aggregate statistics should remain public.
+3. Decide whether Google Fonts, cdnjs/Mermaid, and remote images should be self-hosted or loaded only after a user action.
+4. Record provider roles, contracts, retention, and international-transfer safeguards.
+5. Approve correspondence retention and an operational rights-request process.
+6. Re-audit before adoption for new forms, embeds, analytics, or repository macros.

@@ -8,6 +8,8 @@ Published as a static documentation site via GitHub Pages using xWiki 2.1 markup
 
 **[https://robertschaub.github.io/BestWorkplace/](https://robertschaub.github.io/BestWorkplace/)**
 
+Privacy: [draft notice prepared for review](Docs/xwiki-pages/The%20Best%20Workplace/Privacy%20Policy/WebHome.xwiki). It is not yet effective; the private controller is identified, while the privacy contact, analytics consent/retention design, and provider records remain approval gates.
+
 ## Local preview
 
 ```
