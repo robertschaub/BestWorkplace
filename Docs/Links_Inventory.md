@@ -92,12 +92,12 @@ Both mechanisms work for every redirect entry:
 5. Switches back to the original branch — **does NOT push**
 
 **What it used to do (before 2026-02-21):**
-The original script included `git push origin gh-pages` as step 6. AI agents ran this script when asked to "publish" or "deploy" docs. This overwrote the CI-built `gh-pages` branch with a locally-built version that **lacked the `DOCS_ANALYTICS_URL` secret** (only available in CI). Result: the Stats button stopped working on the live site.
+The original script included `git push origin gh-pages` as step 6. AI agents ran this script when asked to "publish" or "deploy" docs. This overwrote the CI-built `gh-pages` branch with a locally-built version that **lacked the `DOCS_ANALYTICS_URL` secret** (only available in CI). Result: documentation analytics stopped working on the live site.
 
 **Why the push was removed:**
 - CI (`.github/workflows/deploy-docs.yml`) uses `peaceiris/actions-gh-pages@v4` with `force_orphan: true`, which replaces the entire `gh-pages` branch on every deploy.
 - CI injects `DOCS_ANALYTICS_URL` into the build via `--analytics-url`, so the deployed `index.html` has `Analytics.configure(url, 'BW')` baked in.
-- A manual `git push origin gh-pages` from the local script overwrites this CI build. Since the secret isn't available locally, the rebuilt `index.html` has no analytics configuration — the Stats button is hidden.
+- A manual `git push origin gh-pages` from the local script overwrites this CI build. Since the secret isn't available locally, the rebuilt `index.html` has no analytics configuration and records no page views.
 - This happened multiple times before the push step was removed.
 
 **How to publish:** Push to `main`. CI deploys automatically.

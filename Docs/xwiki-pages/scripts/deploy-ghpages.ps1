@@ -2,7 +2,7 @@
 # Builds xWiki documentation for local preview of the GitHub Pages output.
 #
 # NOTE: Actual deployment to gh-pages is handled by CI (.github/workflows/deploy-docs.yml).
-#       CI injects the DOCS_ANALYTICS_URL secret so the stats button works.
+#       CI injects the DOCS_ANALYTICS_URL secret so aggregate page views are counted.
 #       Do NOT push to gh-pages manually — it will overwrite the CI build and break analytics.
 #
 # Usage (from repo root):
