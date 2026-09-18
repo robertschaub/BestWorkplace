@@ -1,10 +1,11 @@
 = Privacy Policy =
 **Last updated:** 18 September 2026
-**Draft version:** 0.4
+**Effective from:** 18 September 2026
+**Version:** 1.0
 
-{{warning}}
-**DRAFT FOR REVIEW — not yet effective.** Before adoption, approve correspondence retention and document provider roles and transfer safeguards. This draft was checked against the repository and deployed data flow; it is not legal advice or retained-counsel sign-off.
-{{/warning}}
+{{info}}
+**Effective privacy notice.** This notice applies to the current static documentation site and its private aggregate page counter. It was checked against the repository and deployed data flow; it is not retained-counsel advice or sign-off.
+{{/info}}
 
 == At a glance ==
 
@@ -52,21 +53,24 @@ Processing follows the Swiss Federal Act on Data Protection principles of lawful
 
 The private operator uses the aggregate page totals to understand use of the public documentation. Where the GDPR applies, the intended basis is the operator's legitimate interest in maintaining and prioritising that documentation, subject to the absence of a visitor identifier and to the user's overriding rights. Ordinary site use is not treated as blanket consent for additional tracking.
 
-GitHub, Google, and Cloudflare may process data outside Switzerland. Before adoption, the controller must record each provider's role, current terms/data-processing agreement, processing location, and any required Swiss or EU adequacy or contractual safeguard.
+GitHub, Google, and Cloudflare may process data outside Switzerland. GitHub, Google Fonts, cdnjs/Cloudflare and remote-media hosts determine ordinary website-delivery, security and service-log processing independently under their own terms. Cloudflare processes the Worker's page reference and aggregate KV totals on the controller's instructions under its customer data-processing addendum; Cloudflare separately determines processing of its account, network-security and service data.
+
+For transfers to the United States, the controller relies on a current Swiss–US Data Privacy Framework certification where it covers the relevant recipient and service, or on recognised Standard Contractual Clauses with the required Swiss adaptations. Cloudflare's customer DPA expressly provides for the EU SCCs as adapted to the Swiss FADP where required. Other independent providers apply their own published transfer safeguards; the controller limits its own counter payload to the project/page reference and does not send a visitor identifier.
 
 Provider notices:
 
-* [[GitHub General Privacy Statement>>url:https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement]]
-* [[Google Privacy Policy>>url:https://policies.google.com/privacy]]
-* [[Cloudflare Privacy Policy>>url:https://www.cloudflare.com/privacypolicy/]]
+* [[GitHub General Privacy Statement>>https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement]]
+* [[Google Privacy Policy>>https://policies.google.com/privacy]]
+* [[Cloudflare Privacy Policy>>https://www.cloudflare.com/privacypolicy/]]
+* [[Cloudflare Customer Data Processing Addendum>>https://www.cloudflare.com/cloudflare-customer-dpa/]]
 
 == 6. Retention ==
 
-|= Data |= Current/proposed period |
-| Aggregate page-view totals in Workers KV | Retained while they remain useful for maintaining the public documentation; they contain no visitor identifier. The operator can reset them through the authenticated Cloudflare account. |
+|= Data |= Retention period / criterion |
+| Aggregate page-view totals in Workers KV | Retained while useful for maintaining the public documentation and reviewed at least annually. They contain no visitor identifier. The operator resets or deletes totals that are no longer needed through the authenticated Cloudflare account. |
 | GitHub Pages, Google Fonts, cdnjs/Cloudflare, and remote-media logs | Set by the respective provider; not directly deletable by this site's controller |
 | Public GitHub contributions and history | Retained as a durable public record and may remain in forks, clones, releases, or archives |
-| Direct correspondence | Proposed maximum of two years after closure unless law, a dispute, or a documented security need requires longer. **[REVIEW REQUIRED: approve and implement.]** |
+| Direct correspondence | Up to two years after closure unless law, an active dispute, or a documented security need requires longer; reviewed at least annually |
 
 We do not sell personal data or use page-view totals for advertising or individual profiling.
 
@@ -74,7 +78,7 @@ We do not sell personal data or use page-view totals for advertising or individu
 
 Depending on applicable law and circumstances, you may request access, correction, deletion, restriction, objection, or data release/portability by writing to the controller address in §1. We may verify identity or authority before disclosing or changing data.
 
-Public Git history cannot always be fully erased from distributed copies. We will nevertheless assess reasonable correction, redaction, deletion, or platform measures. You may complain to the [[Swiss Federal Data Protection and Information Commissioner (FDPIC)>>url:https://www.edoeb.admin.ch/en]] or, where the GDPR applies, the competent EU/EEA supervisory authority.
+Public Git history cannot always be fully erased from distributed copies. We will nevertheless assess reasonable correction, redaction, deletion, or platform measures. You may complain to the [[Swiss Federal Data Protection and Information Commissioner (FDPIC)>>https://www.edoeb.admin.ch/en]] or, where the GDPR applies, the competent EU/EEA supervisory authority.
 
 The site uses HTTPS through GitHub Pages and public source code, but no internet service can guarantee absolute security. Do not place secrets, private correspondence, or unnecessary personal data in public issues or contributions.
 
@@ -82,11 +86,12 @@ The site uses HTTPS through GitHub Pages and public source code, but no internet
 
 The site is general workplace-learning material and is not designed to collect children's data. Do not submit personal data about a child in a public contribution.
 
-Material changes will be versioned in the repository. A dated version becomes effective only after the controller and outstanding review gates are resolved.
+Material changes will be versioned in the repository and state their effective date. This notice is reviewed before new forms, embeds, visitor identifiers, public statistics, or materially different analytics are enabled.
 
-== 9. Review gates before adoption ==
+== 9. Operating decisions and review triggers ==
 
-1. Decide whether Google Fonts, cdnjs/Mermaid, and remote images should be self-hosted or loaded only after a user action.
-2. Record provider roles, contracts, retention, and international-transfer safeguards.
-3. Approve correspondence retention and an operational rights-request process.
-4. Re-audit before adoption for new forms, embeds, visitor identifiers, or repository macros.
+1. Remote Google Fonts, cdnjs/Mermaid and embedded images remain enabled because they are part of the current public documentation presentation; their requests and independent provider processing are disclosed above.
+2. Statistics remain private to the operator. There is no public statistics endpoint or visible visitor counter.
+3. Rights requests are handled in writing at the address in §1; identity or authority is verified where needed, and the operator targets an initial response within 30 days.
+4. The operator reviews aggregate totals and correspondence at least annually and deletes them when the retention criterion above is no longer met.
+5. The notice and necessity of external assets are re-audited before a new form, visitor identifier, public statistic, repository macro or materially different analytics is enabled.
