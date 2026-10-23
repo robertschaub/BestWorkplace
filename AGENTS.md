@@ -167,6 +167,9 @@ Provide a summary:
 | Documentation + diagrams | Agent with TECH_WRITER role | See `Docs/AGENTS/TECH_WRITER_START_HERE.md` |
 | xWiki documentation | Any agent | Read `Docs/AGENTS/AGENTS_xWiki.md` first |
 | gh-pages deployment | Agent with DEVOPS role | See `Docs/AGENTS/Multi_Agent_Collaboration_Rules.md` §2.3 |
+| Delegated Gemini review / consultation | Antigravity CLI (`agy`) | Local subscription OAuth (`gemini-4-argon-high` / `gemini-4-argon-low`), never paid API fallback |
+
+For an authorized Gemini call, invoke the local Antigravity CLI (`~/.gemini/bin/agy.exe` or `%LOCALAPPDATA%\agy\bin\agy.exe`) with `--input-format stream-json --output-format stream-json --mode plan --model <slug> [--effort low|medium|high] --print-timeout 15m` (for example `gemini-4-argon-high` for deep review or `gemini-4-argon-low` for bounded checks), stripping `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_GENAI_USE_*` from the child environment and sending `{"event":"user","message":{"content":"<prompt>"}}\n` on stdin.
 
 ---
 
